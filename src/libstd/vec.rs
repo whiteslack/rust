@@ -739,12 +739,7 @@ pub mod traits {
         }
     }
 
-    impl<'self, T: Clone, V: Vector<T>> AddAssign<V> for &'self mut [T] {
-        #[inline]
-        fn add_assign(&mut self, rhs: &V) {
-            self.push_all(rhs.as_slice());
-        }
-    }
+    // There can be no AddAssign to match the above Add; &mut [T] cannot be extended.
 
     impl<T:Clone, V: Vector<T>> Add<V, ~[T]> for ~[T] {
         #[inline]

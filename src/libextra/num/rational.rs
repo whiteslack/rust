@@ -163,6 +163,8 @@ impl<T: Clone + Integer + Ord>
     }
 }
 
+impl<T: Clone + Integer + Ord> MulAssign<Ratio<T>> for Ratio<T>;
+
 // (a/b) / (c/d) = (a*d)/(b*c)
 impl<T: Clone + Integer + Ord>
     Div<Ratio<T>,Ratio<T>> for Ratio<T> {
@@ -171,6 +173,8 @@ impl<T: Clone + Integer + Ord>
         Ratio::new(self.numer * rhs.denom, self.denom * rhs.numer)
     }
 }
+
+impl<T: Clone + Integer + Ord> DivAssign<Ratio<T>> for Ratio<T>;
 
 // Abstracts the a/b `op` c/d = (a*d `op` b*d) / (b*d) pattern
 macro_rules! arith_impl {

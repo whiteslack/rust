@@ -1177,7 +1177,18 @@ pub mod traits {
         }
     }
 
-    impl<'self> AddAssign<&'self str> for &'self mut str {
+    // There can be no AddAssign to match the above Add; &mut str isn't a valid type
+
+    impl<'self> Add<&'self str,~str> for ~str {
+        #[inline]
+        fn add(&self, rhs: & &'self str) -> ~str {
+            let mut ret = self.to_owned();
+            ret.push_str(*rhs);
+            ret
+        }
+    }
+
+    impl<'self> AddAssign<&'self str> for ~str {
         #[inline]
         fn add_assign(&mut self, rhs: & &'self str) {
             self.push_str(*rhs);
