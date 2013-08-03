@@ -42,58 +42,68 @@ pub enum LangItem {
     DropTraitLangItem,                 // 3
 
     AddTraitLangItem,                  // 4
-    SubTraitLangItem,                  // 5
-    MulTraitLangItem,                  // 6
-    DivTraitLangItem,                  // 7
-    RemTraitLangItem,                  // 8
-    NegTraitLangItem,                  // 9
-    NotTraitLangItem,                  // 10
-    BitXorTraitLangItem,               // 11
-    BitAndTraitLangItem,               // 12
-    BitOrTraitLangItem,                // 13
-    ShlTraitLangItem,                  // 14
-    ShrTraitLangItem,                  // 15
-    IndexTraitLangItem,                // 16
+    AddAssignTraitLangItem,            // 5
+    SubTraitLangItem,                  // 6
+    SubAssignTraitLangItem,            // 7
+    MulTraitLangItem,                  // 8
+    MulAssignTraitLangItem,            // 9
+    DivTraitLangItem,                  // 10
+    DivAssignTraitLangItem,            // 11
+    RemTraitLangItem,                  // 12
+    RemAssignTraitLangItem,            // 13
+    NegTraitLangItem,                  // 14
+    NotTraitLangItem,                  // 15
+    BitXorTraitLangItem,               // 16
+    BitXorAssignTraitLangItem,         // 17
+    BitAndTraitLangItem,               // 18
+    BitAndAssignTraitLangItem,         // 19
+    BitOrTraitLangItem,                // 20
+    BitOrAssignTraitLangItem,          // 21
+    ShlTraitLangItem,                  // 22
+    ShlAssignTraitLangItem,            // 23
+    ShrTraitLangItem,                  // 24
+    ShrAssignTraitLangItem,            // 25
+    IndexTraitLangItem,                // 26
 
-    EqTraitLangItem,                   // 17
-    OrdTraitLangItem,                  // 18
+    EqTraitLangItem,                   // 27
+    OrdTraitLangItem,                  // 28
 
-    StrEqFnLangItem,                   // 19
-    UniqStrEqFnLangItem,               // 20
-    FailFnLangItem,                    // 21
-    FailBoundsCheckFnLangItem,         // 22
-    ExchangeMallocFnLangItem,          // 23
-    ClosureExchangeMallocFnLangItem,   // 24
-    ExchangeFreeFnLangItem,            // 25
-    MallocFnLangItem,                  // 26
-    FreeFnLangItem,                    // 27
-    BorrowAsImmFnLangItem,             // 28
-    BorrowAsMutFnLangItem,             // 29
-    ReturnToMutFnLangItem,             // 30
-    CheckNotBorrowedFnLangItem,        // 31
-    StrDupUniqFnLangItem,              // 32
-    RecordBorrowFnLangItem,            // 33
-    UnrecordBorrowFnLangItem,          // 34
+    StrEqFnLangItem,                   // 29
+    UniqStrEqFnLangItem,               // 30
+    FailFnLangItem,                    // 31
+    FailBoundsCheckFnLangItem,         // 32
+    ExchangeMallocFnLangItem,          // 33
+    ClosureExchangeMallocFnLangItem,   // 34
+    ExchangeFreeFnLangItem,            // 35
+    MallocFnLangItem,                  // 36
+    FreeFnLangItem,                    // 37
+    BorrowAsImmFnLangItem,             // 38
+    BorrowAsMutFnLangItem,             // 39
+    ReturnToMutFnLangItem,             // 40
+    CheckNotBorrowedFnLangItem,        // 41
+    StrDupUniqFnLangItem,              // 42
+    RecordBorrowFnLangItem,            // 43
+    UnrecordBorrowFnLangItem,          // 44
 
-    StartFnLangItem,                   // 35
+    StartFnLangItem,                   // 45
 
-    TyDescStructLangItem,              // 36
-    TyVisitorTraitLangItem,            // 37
-    OpaqueStructLangItem,              // 38
+    TyDescStructLangItem,              // 46
+    TyVisitorTraitLangItem,            // 47
+    OpaqueStructLangItem,              // 48
 
-    EventLoopFactoryLangItem,          // 39
+    EventLoopFactoryLangItem,          // 49
 
-    TypeIdLangItem,                    // 40
+    TypeIdLangItem,                    // 50
 }
 
 pub struct LanguageItems {
-    items: [Option<ast::DefId>, ..41]
+    items: [Option<ast::DefId>, ..51]
 }
 
 impl LanguageItems {
     pub fn new() -> LanguageItems {
         LanguageItems {
-            items: [ None, ..41 ]
+            items: [ None, ..51 ]
         }
     }
 
@@ -110,43 +120,53 @@ impl LanguageItems {
             3  => "drop",
 
             4  => "add",
-            5  => "sub",
-            6  => "mul",
-            7  => "div",
-            8  => "rem",
-            9  => "neg",
-            10 => "not",
-            11 => "bitxor",
-            12 => "bitand",
-            13 => "bitor",
-            14 => "shl",
-            15 => "shr",
-            16 => "index",
-            17 => "eq",
-            18 => "ord",
+            5  => "add_assign",
+            6  => "sub",
+            7  => "sub_assign",
+            8  => "mul",
+            9  => "mul_assign",
+            10 => "div",
+            11 => "div_assign",
+            12 => "rem",
+            13 => "rem_assign",
+            14 => "neg",
+            15 => "not",
+            16 => "bitxor",
+            17 => "bitxor_assign",
+            18 => "bitand",
+            19 => "bitand_assign",
+            20 => "bitor",
+            21 => "bitor_assign",
+            22 => "shl",
+            23 => "shl_assign",
+            24 => "shr",
+            25 => "shr_assign",
+            26 => "index",
+            27 => "eq",
+            28 => "ord",
 
-            19 => "str_eq",
-            20 => "uniq_str_eq",
-            21 => "fail_",
-            22 => "fail_bounds_check",
-            23 => "exchange_malloc",
-            24 => "closure_exchange_malloc",
-            25 => "exchange_free",
-            26 => "malloc",
-            27 => "free",
-            28 => "borrow_as_imm",
-            29 => "borrow_as_mut",
-            30 => "return_to_mut",
-            31 => "check_not_borrowed",
-            32 => "strdup_uniq",
-            33 => "record_borrow",
-            34 => "unrecord_borrow",
+            29 => "str_eq",
+            30 => "uniq_str_eq",
+            31 => "fail_",
+            32 => "fail_bounds_check",
+            33 => "exchange_malloc",
+            34 => "closure_exchange_malloc",
+            35 => "exchange_free",
+            36 => "malloc",
+            37 => "free",
+            38 => "borrow_as_imm",
+            39 => "borrow_as_mut",
+            40 => "return_to_mut",
+            41 => "check_not_borrowed",
+            42 => "strdup_uniq",
+            43 => "record_borrow",
+            44 => "unrecord_borrow",
 
-            35 => "start",
+            45 => "start",
 
-            36 => "ty_desc",
-            37 => "ty_visitor",
-            38 => "opaque",
+            46 => "ty_desc",
+            47 => "ty_visitor",
+            48 => "opaque",
 
             39 => "event_loop_factory",
 
@@ -195,17 +215,32 @@ impl LanguageItems {
     pub fn add_trait(&self) -> Option<ast::DefId> {
         self.items[AddTraitLangItem as uint]
     }
+    pub fn add_assign_trait(&self) -> Option<ast::DefId> {
+        self.items[AddAssignTraitLangItem as uint]
+    }
     pub fn sub_trait(&self) -> Option<ast::DefId> {
         self.items[SubTraitLangItem as uint]
+    }
+    pub fn sub_assign_trait(&self) -> Option<ast::DefId> {
+        self.items[SubAssignTraitLangItem as uint]
     }
     pub fn mul_trait(&self) -> Option<ast::DefId> {
         self.items[MulTraitLangItem as uint]
     }
+    pub fn mul_assign_trait(&self) -> Option<ast::DefId> {
+        self.items[MulAssignTraitLangItem as uint]
+    }
     pub fn div_trait(&self) -> Option<ast::DefId> {
         self.items[DivTraitLangItem as uint]
     }
+    pub fn div_assign_trait(&self) -> Option<ast::DefId> {
+        self.items[DivAssignTraitLangItem as uint]
+    }
     pub fn rem_trait(&self) -> Option<ast::DefId> {
         self.items[RemTraitLangItem as uint]
+    }
+    pub fn rem_assign_trait(&self) -> Option<ast::DefId> {
+        self.items[RemAssignTraitLangItem as uint]
     }
     pub fn neg_trait(&self) -> Option<ast::DefId> {
         self.items[NegTraitLangItem as uint]
@@ -216,17 +251,32 @@ impl LanguageItems {
     pub fn bitxor_trait(&self) -> Option<ast::DefId> {
         self.items[BitXorTraitLangItem as uint]
     }
+    pub fn bitxor_assign_trait(&self) -> Option<ast::DefId> {
+        self.items[BitXorAssignTraitLangItem as uint]
+    }
     pub fn bitand_trait(&self) -> Option<ast::DefId> {
         self.items[BitAndTraitLangItem as uint]
+    }
+    pub fn bitand_assign_trait(&self) -> Option<ast::DefId> {
+        self.items[BitAndAssignTraitLangItem as uint]
     }
     pub fn bitor_trait(&self) -> Option<ast::DefId> {
         self.items[BitOrTraitLangItem as uint]
     }
+    pub fn bitor_assign_trait(&self) -> Option<ast::DefId> {
+        self.items[BitOrAssignTraitLangItem as uint]
+    }
     pub fn shl_trait(&self) -> Option<ast::DefId> {
         self.items[ShlTraitLangItem as uint]
     }
+    pub fn shl_assign_trait(&self) -> Option<ast::DefId> {
+        self.items[ShlAssignTraitLangItem as uint]
+    }
     pub fn shr_trait(&self) -> Option<ast::DefId> {
         self.items[ShrTraitLangItem as uint]
+    }
+    pub fn shr_assign_trait(&self) -> Option<ast::DefId> {
+        self.items[ShrAssignTraitLangItem as uint]
     }
     pub fn index_trait(&self) -> Option<ast::DefId> {
         self.items[IndexTraitLangItem as uint]
@@ -350,17 +400,27 @@ impl LanguageItemCollector {
         item_refs.insert("drop", DropTraitLangItem as uint);
 
         item_refs.insert("add", AddTraitLangItem as uint);
+        item_refs.insert("add_assign", AddAssignTraitLangItem as uint);
         item_refs.insert("sub", SubTraitLangItem as uint);
+        item_refs.insert("sub_assign", SubAssignTraitLangItem as uint);
         item_refs.insert("mul", MulTraitLangItem as uint);
+        item_refs.insert("mul_assign", MulAssignTraitLangItem as uint);
         item_refs.insert("div", DivTraitLangItem as uint);
+        item_refs.insert("div_assign", DivAssignTraitLangItem as uint);
         item_refs.insert("rem", RemTraitLangItem as uint);
+        item_refs.insert("rem_assign", RemAssignTraitLangItem as uint);
         item_refs.insert("neg", NegTraitLangItem as uint);
         item_refs.insert("not", NotTraitLangItem as uint);
         item_refs.insert("bitxor", BitXorTraitLangItem as uint);
+        item_refs.insert("bitxor_assign", BitXorAssignTraitLangItem as uint);
         item_refs.insert("bitand", BitAndTraitLangItem as uint);
+        item_refs.insert("bitand_assign", BitAndAssignTraitLangItem as uint);
         item_refs.insert("bitor", BitOrTraitLangItem as uint);
+        item_refs.insert("bitor_assign", BitOrAssignTraitLangItem as uint);
         item_refs.insert("shl", ShlTraitLangItem as uint);
+        item_refs.insert("shl_assign", ShlAssignTraitLangItem as uint);
         item_refs.insert("shr", ShrTraitLangItem as uint);
+        item_refs.insert("shr_assign", ShrAssignTraitLangItem as uint);
         item_refs.insert("index", IndexTraitLangItem as uint);
 
         item_refs.insert("eq", EqTraitLangItem as uint);

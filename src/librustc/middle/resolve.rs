@@ -5132,44 +5132,84 @@ impl Resolver {
                 let traits = self.search_for_traits_containing_method(ident);
                 self.trait_map.insert(expr.id, @mut traits);
             }
-            ExprBinary(_, BiAdd, _, _) | ExprAssignOp(_, BiAdd, _, _) => {
+            ExprBinary(_, BiAdd, _, _) => {
                 let i = self.lang_items.add_trait();
                 self.add_fixed_trait_for_expr(expr.id, i);
             }
-            ExprBinary(_, BiSub, _, _) | ExprAssignOp(_, BiSub, _, _) => {
+            ExprAssignOp(_, BiAdd, _, _) => {
+                let i = self.lang_items.add_assign_trait();
+                self.add_fixed_trait_for_expr(expr.id, i);
+            }
+            ExprBinary(_, BiSub, _, _) => {
                 let i = self.lang_items.sub_trait();
                 self.add_fixed_trait_for_expr(expr.id, i);
             }
-            ExprBinary(_, BiMul, _, _) | ExprAssignOp(_, BiMul, _, _) => {
+            ExprAssignOp(_, BiSub, _, _) => {
+                let i = self.lang_items.sub_assign_trait();
+                self.add_fixed_trait_for_expr(expr.id, i);
+            }
+            ExprBinary(_, BiMul, _, _) => {
                 let i = self.lang_items.mul_trait();
                 self.add_fixed_trait_for_expr(expr.id, i);
             }
-            ExprBinary(_, BiDiv, _, _) | ExprAssignOp(_, BiDiv, _, _) => {
+            ExprAssignOp(_, BiMul, _, _) => {
+                let i = self.lang_items.mul_assign_trait();
+                self.add_fixed_trait_for_expr(expr.id, i);
+            }
+            ExprBinary(_, BiDiv, _, _) => {
                 let i = self.lang_items.div_trait();
                 self.add_fixed_trait_for_expr(expr.id, i);
             }
-            ExprBinary(_, BiRem, _, _) | ExprAssignOp(_, BiRem, _, _) => {
+            ExprAssignOp(_, BiDiv, _, _) => {
+                let i = self.lang_items.div_assign_trait();
+                self.add_fixed_trait_for_expr(expr.id, i);
+            }
+            ExprBinary(_, BiRem, _, _) => {
                 let i = self.lang_items.rem_trait();
                 self.add_fixed_trait_for_expr(expr.id, i);
             }
-            ExprBinary(_, BiBitXor, _, _) | ExprAssignOp(_, BiBitXor, _, _) => {
+            ExprAssignOp(_, BiRem, _, _) => {
+                let i = self.lang_items.rem_assign_trait();
+                self.add_fixed_trait_for_expr(expr.id, i);
+            }
+            ExprBinary(_, BiBitXor, _, _) => {
                 let i = self.lang_items.bitxor_trait();
                 self.add_fixed_trait_for_expr(expr.id, i);
             }
-            ExprBinary(_, BiBitAnd, _, _) | ExprAssignOp(_, BiBitAnd, _, _) => {
+            ExprAssignOp(_, BiBitXor, _, _) => {
+                let i = self.lang_items.bitxor_assign_trait();
+                self.add_fixed_trait_for_expr(expr.id, i);
+            }
+            ExprBinary(_, BiBitAnd, _, _) => {
                 let i = self.lang_items.bitand_trait();
                 self.add_fixed_trait_for_expr(expr.id, i);
             }
-            ExprBinary(_, BiBitOr, _, _) | ExprAssignOp(_, BiBitOr, _, _) => {
+            ExprAssignOp(_, BiBitAnd, _, _) => {
+                let i = self.lang_items.bitand_assign_trait();
+                self.add_fixed_trait_for_expr(expr.id, i);
+            }
+            ExprBinary(_, BiBitOr, _, _) => {
                 let i = self.lang_items.bitor_trait();
                 self.add_fixed_trait_for_expr(expr.id, i);
             }
-            ExprBinary(_, BiShl, _, _) | ExprAssignOp(_, BiShl, _, _) => {
+            ExprAssignOp(_, BiBitOr, _, _) => {
+                let i = self.lang_items.bitor_assign_trait();
+                self.add_fixed_trait_for_expr(expr.id, i);
+            }
+            ExprBinary(_, BiShl, _, _) => {
                 let i = self.lang_items.shl_trait();
                 self.add_fixed_trait_for_expr(expr.id, i);
             }
-            ExprBinary(_, BiShr, _, _) | ExprAssignOp(_, BiShr, _, _) => {
+            ExprAssignOp(_, BiShl, _, _) => {
+                let i = self.lang_items.shl_assign_trait();
+                self.add_fixed_trait_for_expr(expr.id, i);
+            }
+            ExprBinary(_, BiShr, _, _) => {
                 let i = self.lang_items.shr_trait();
+                self.add_fixed_trait_for_expr(expr.id, i);
+            }
+            ExprAssignOp(_, BiShr, _, _) => {
+                let i = self.lang_items.shr_assign_trait();
                 self.add_fixed_trait_for_expr(expr.id, i);
             }
             ExprBinary(_, BiLt, _, _) | ExprBinary(_, BiLe, _, _) |
