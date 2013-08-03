@@ -21,7 +21,7 @@ use util::common::stmt_set;
 use util::ppaux::{note_and_explain_region, Repr, UserString};
 
 use std::hashmap::{HashSet, HashMap};
-use std::ops::{BitOr, BitAnd};
+use std::ops::{BitOr, BitOrAssign, BitAnd, BitAndAssign};
 use std::result::{Result};
 use syntax::ast;
 use syntax::ast_map;
@@ -384,9 +384,21 @@ impl BitOr<RestrictionSet,RestrictionSet> for RestrictionSet {
     }
 }
 
+impl BitOrAssign<RestrictionSet> for RestrictionSet {
+    fn bitor_assign(&mut self, rhs: &RestrictionSet) {
+        self.bits |= rhs.bits;
+    }
+}
+
 impl BitAnd<RestrictionSet,RestrictionSet> for RestrictionSet {
     fn bitand(&self, rhs: &RestrictionSet) -> RestrictionSet {
         RestrictionSet {bits: self.bits & rhs.bits}
+    }
+}
+
+impl BitAndAssign<RestrictionSet> for RestrictionSet {
+    fn bitand_assign(&mut self, rhs: &RestrictionSet) {
+        self.bits &= rhs.bits;
     }
 }
 

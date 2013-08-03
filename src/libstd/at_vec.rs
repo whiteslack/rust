@@ -150,7 +150,7 @@ impl<A> FromIterator<A> for @[A] {
 pub mod traits {
     use at_vec::append;
     use clone::Clone;
-    use ops::Add;
+    use ops::{Add, AddAssign};
     use vec::Vector;
 
     impl<'self,T:Clone, V: Vector<T>> Add<V,@[T]> for @[T] {
@@ -159,6 +159,8 @@ pub mod traits {
             append(*self, rhs.as_slice())
         }
     }
+
+    impl<'self, T: Clone, V: Vector<T>> AddAssign<V> for @[T];
 }
 
 #[cfg(test)]

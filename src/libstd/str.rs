@@ -1163,7 +1163,7 @@ Section: Trait implementations
 #[cfg(not(test))]
 #[allow(missing_doc)]
 pub mod traits {
-    use ops::Add;
+    use ops::{Add, AddAssign};
     use cmp::{TotalOrd, Ordering, Less, Equal, Greater, Eq, Ord, Equiv, TotalEq};
     use super::{Str, eq_slice};
     use option::{Some, None};
@@ -1174,6 +1174,13 @@ pub mod traits {
             let mut ret = self.to_owned();
             ret.push_str(*rhs);
             ret
+        }
+    }
+
+    impl<'self> AddAssign<&'self str> for &'self mut str {
+        #[inline]
+        fn add_assign(&mut self, rhs: & &'self str) {
+            self.push_str(*rhs);
         }
     }
 
