@@ -210,13 +210,6 @@ impl PurityState {
     }
 }
 
-/// Whether `check_binop` allows overloaded operators to be invoked.
-#[deriving(Eq)]
-enum AllowOverloadedOperatorsFlag {
-    AllowOverloadedOperators,
-    DontAllowOverloadedOperators,
-}
-
 #[deriving(Clone)]
 pub struct FnCtxt {
     // Number of errors that had been reported when we started
@@ -2047,8 +2040,7 @@ pub fn check_expr_with_unifier(fcx: @mut FnCtxt,
                    lhs: @ast::Expr,
                    rhs: @ast::Expr,
                    // Used only in the error case
-                   expected_result: Option<ty::t>,
-                   allow_overloaded_operators: AllowOverloadedOperatorsFlag
+                   expected_result: Option<ty::t>
                   ) {
         let tcx = fcx.ccx.tcx;
 
@@ -2099,9 +2091,7 @@ pub fn check_expr_with_unifier(fcx: @mut FnCtxt,
         }
 
         // Check for overloaded operators if allowed.
-        let result_t;
-        if allow_overloaded_operators == AllowOverloadedOperators {
-            result_t = check_user_binop(fcx,
+        let result_t = check_user_binop(fcx,
                                         callee_id,
                                         expr,
                                         lhs,
@@ -2109,18 +2099,6 @@ pub fn check_expr_with_unifier(fcx: @mut FnCtxt,
                                         op,
                                         rhs,
                                         expected_result);
-        } else {
-            fcx.type_error_message(expr.span,
-                                   |actual| {
-                                        format!("binary operation {} cannot be \
-                                              applied to type `{}`",
-                                             ast_util::binop_to_str(op),
-                                             actual)
-                                   },
-                                   lhs_t,
-                                   None);
-            result_t = ty::mk_err();
-        }
 
         fcx.write_ty(expr.id, result_t);
         if ty::type_is_error(result_t) {
@@ -2660,8 +2638,7 @@ pub fn check_expr_with_unifier(fcx: @mut FnCtxt,
                     op,
                     lhs,
                     rhs,
-                    expected,
-                    AllowOverloadedOperators);
+                    expected);
 
         let lhs_ty = fcx.expr_ty(lhs);
         let rhs_ty = fcx.expr_ty(rhs);
@@ -2681,8 +2658,7 @@ pub fn check_expr_with_unifier(fcx: @mut FnCtxt,
                     op,
                     lhs,
                     rhs,
-                    expected,
-                    DontAllowOverloadedOperators);
+                    expected);
 
         let lhs_t = fcx.expr_ty(lhs);
         let result_t = fcx.expr_ty(expr);
