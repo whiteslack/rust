@@ -256,10 +256,16 @@ impl Add<f32,f32> for f32 {
 }
 
 #[cfg(not(test))]
+impl AddAssign<f32,f32> for f32;
+
+#[cfg(not(test))]
 impl Sub<f32,f32> for f32 {
     #[inline]
     fn sub(&self, other: &f32) -> f32 { *self - *other }
 }
+
+#[cfg(not(test))]
+impl SubAssign<f32,f32> for f32;
 
 #[cfg(not(test))]
 impl Mul<f32,f32> for f32 {
@@ -268,16 +274,25 @@ impl Mul<f32,f32> for f32 {
 }
 
 #[cfg(not(test))]
+impl MulAssign<f32,f32> for f32;
+
+#[cfg(not(test))]
 impl Div<f32,f32> for f32 {
     #[inline]
     fn div(&self, other: &f32) -> f32 { *self / *other }
 }
 
 #[cfg(not(test))]
+impl DivAssign<f32,f32> for f32;
+
+#[cfg(not(test))]
 impl Rem<f32,f32> for f32 {
     #[inline]
     fn rem(&self, other: &f32) -> f32 { *self % *other }
 }
+
+#[cfg(not(test))]
+impl RemAssign<f32,f32> for f32;
 
 #[cfg(not(test))]
 impl Neg<f32> for f32 {

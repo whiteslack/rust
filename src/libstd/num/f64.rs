@@ -277,26 +277,46 @@ impl Add<f64,f64> for f64 {
     #[inline]
     fn add(&self, other: &f64) -> f64 { *self + *other }
 }
+
+#[cfg(not(test))]
+impl AddAssign<f64,f64> for f64;
+
 #[cfg(not(test))]
 impl Sub<f64,f64> for f64 {
     #[inline]
     fn sub(&self, other: &f64) -> f64 { *self - *other }
 }
+
+#[cfg(not(test))]
+impl SubAssign<f64,f64> for f64;
+
 #[cfg(not(test))]
 impl Mul<f64,f64> for f64 {
     #[inline]
     fn mul(&self, other: &f64) -> f64 { *self * *other }
 }
+
+#[cfg(not(test))]
+impl MulAssign<f64,f64> for f64;
+
 #[cfg(not(test))]
 impl Div<f64,f64> for f64 {
     #[inline]
     fn div(&self, other: &f64) -> f64 { *self / *other }
 }
+
+#[cfg(not(test))]
+impl DivAssign<f64,f64> for f64;
+
 #[cfg(not(test))]
 impl Rem<f64,f64> for f64 {
     #[inline]
     fn rem(&self, other: &f64) -> f64 { *self % *other }
 }
+
+#[cfg(not(test))]
+impl RemAssign<f64,f64> for f64;
+
 #[cfg(not(test))]
 impl Neg<f64> for f64 {
     #[inline]

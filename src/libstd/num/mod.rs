@@ -17,7 +17,7 @@
 
 use clone::{Clone, DeepClone};
 use cmp::{Eq, ApproxEq, Ord};
-use ops::{Add, Sub, Mul, Div, Rem, Neg};
+use ops::{Add, AddAssign, Sub, SubAssign, Mul, MulAssign, Div, DivAssign, Rem, RemAssign, Neg};
 use ops::{Not, BitAnd, BitOr, BitXor, Shl, Shr};
 use option::{Option, Some, None};
 
@@ -27,10 +27,15 @@ pub mod strconv;
 pub trait Num: Eq + Zero + One
              + Neg<Self>
              + Add<Self,Self>
+             + AddAssign<Self,Self>
              + Sub<Self,Self>
+             + SubAssign<Self,Self>
              + Mul<Self,Self>
+             + MulAssign<Self,Self>
              + Div<Self,Self>
-             + Rem<Self,Self> {}
+             + DivAssign<Self,Self>
+             + Rem<Self,Self>
+             + RemAssign<Self,Self> {}
 
 pub trait Orderable: Ord {
     // These should be methods on `Ord`, with overridable default implementations. We don't want
@@ -467,10 +472,15 @@ pub trait Primitive: Clone
                    + Bounded
                    + Neg<Self>
                    + Add<Self,Self>
+                   + AddAssign<Self,Self>
                    + Sub<Self,Self>
+                   + SubAssign<Self,Self>
                    + Mul<Self,Self>
+                   + MulAssign<Self,Self>
                    + Div<Self,Self>
-                   + Rem<Self,Self> {
+                   + DivAssign<Self,Self>
+                   + Rem<Self,Self>
+                   + RemAssign<Self,Self> {
     // FIXME (#5527): These should be associated constants
     // FIXME (#8888): Removing `unused_self` requires #8888 to be fixed.
     fn bits(unused_self: Option<Self>) -> uint;

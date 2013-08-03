@@ -91,10 +91,16 @@ impl Add<$T,$T> for $T {
 }
 
 #[cfg(not(test))]
+impl AddAssign<$T,$T> for $T;
+
+#[cfg(not(test))]
 impl Sub<$T,$T> for $T {
     #[inline]
     fn sub(&self, other: &$T) -> $T { *self - *other }
 }
+
+#[cfg(not(test))]
+impl SubAssign<$T,$T> for $T;
 
 #[cfg(not(test))]
 impl Mul<$T,$T> for $T {
@@ -103,16 +109,25 @@ impl Mul<$T,$T> for $T {
 }
 
 #[cfg(not(test))]
+impl MulAssign<$T,$T> for $T;
+
+#[cfg(not(test))]
 impl Div<$T,$T> for $T {
     #[inline]
     fn div(&self, other: &$T) -> $T { *self / *other }
 }
 
 #[cfg(not(test))]
+impl DivAssign<$T,$T> for $T;
+
+#[cfg(not(test))]
 impl Rem<$T,$T> for $T {
     #[inline]
     fn rem(&self, other: &$T) -> $T { *self % *other }
 }
+
+#[cfg(not(test))]
+impl RemAssign<$T,$T> for $T;
 
 #[cfg(not(test))]
 impl Neg<$T> for $T {
@@ -185,10 +200,16 @@ impl BitOr<$T,$T> for $T {
 }
 
 #[cfg(not(test))]
+impl BitOrAssign<$T,$T> for $T;
+
+#[cfg(not(test))]
 impl BitAnd<$T,$T> for $T {
     #[inline]
     fn bitand(&self, other: &$T) -> $T { *self & *other }
 }
+
+#[cfg(not(test))]
+impl BitAndAssign<$T,$T> for $T;
 
 #[cfg(not(test))]
 impl BitXor<$T,$T> for $T {
@@ -197,16 +218,25 @@ impl BitXor<$T,$T> for $T {
 }
 
 #[cfg(not(test))]
+impl BitXorAssign<$T,$T> for $T;
+
+#[cfg(not(test))]
 impl Shl<$T,$T> for $T {
     #[inline]
     fn shl(&self, other: &$T) -> $T { *self << *other }
 }
 
 #[cfg(not(test))]
+impl ShlAssign<$T,$T> for $T;
+
+#[cfg(not(test))]
 impl Shr<$T,$T> for $T {
     #[inline]
     fn shr(&self, other: &$T) -> $T { *self >> *other }
 }
+
+#[cfg(not(test))]
+impl ShrAssign<$T,$T> for $T;
 
 #[cfg(not(test))]
 impl Not<$T> for $T {
