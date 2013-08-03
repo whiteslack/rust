@@ -31,9 +31,12 @@ pub use either::{Either, Left, Right};
 pub use kinds::Sized;
 pub use kinds::{Freeze, Send};
 pub use ops::{Add, Sub, Mul, Div, Rem, Neg, Not};
+pub use ops::{AddAssign, SubAssign, MulAssign, DivAssign, RemAssign};
 pub use ops::{BitAnd, BitOr, BitXor};
+pub use ops::{BitAndAssign, BitOrAssign, BitXorAssign};
 pub use ops::{Drop};
 pub use ops::{Shl, Shr, Index};
+pub use ops::{ShlAssign, ShrAssign};
 pub use option::{Option, Some, None};
 pub use result::{Result, Ok, Err};
 
