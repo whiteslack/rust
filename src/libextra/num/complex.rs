@@ -113,6 +113,8 @@ impl<T: Clone + Num> Add<Cmplx<T>, Cmplx<T>> for Cmplx<T> {
         Cmplx::new(self.re + other.re, self.im + other.im)
     }
 }
+impl<T: Clone + Num> AddAssign<Cmplx<T>> for Cmplx<T>;
+
 // (a + i b) - (c + i d) == (a - c) + i (b - d)
 impl<T: Clone + Num> Sub<Cmplx<T>, Cmplx<T>> for Cmplx<T> {
     #[inline]
@@ -120,6 +122,8 @@ impl<T: Clone + Num> Sub<Cmplx<T>, Cmplx<T>> for Cmplx<T> {
         Cmplx::new(self.re - other.re, self.im - other.im)
     }
 }
+impl<T: Clone + Num> SubAssign<Cmplx<T>> for Cmplx<T>;
+
 // (a + i b) * (c + i d) == (a*c - b*d) + i (a*d + b*c)
 impl<T: Clone + Num> Mul<Cmplx<T>, Cmplx<T>> for Cmplx<T> {
     #[inline]
@@ -128,6 +132,7 @@ impl<T: Clone + Num> Mul<Cmplx<T>, Cmplx<T>> for Cmplx<T> {
                    self.re*other.im + self.im*other.re)
     }
 }
+impl<T: Clone + Num> MulAssign<Cmplx<T>> for Cmplx<T>;
 
 // (a + i b) / (c + i d) == [(a + i b) * (c - i d)] / (c*c + d*d)
 //   == [(a*c + b*d) / (c*c + d*d)] + i [(b*c - a*d) / (c*c + d*d)]
@@ -139,6 +144,7 @@ impl<T: Clone + Num> Div<Cmplx<T>, Cmplx<T>> for Cmplx<T> {
                    (self.im*other.re - self.re*other.im) / norm_sqr)
     }
 }
+impl<T: Clone + Num> DivAssign<Cmplx<T>> for Cmplx<T>;
 
 impl<T: Clone + Num> Neg<Cmplx<T>> for Cmplx<T> {
     #[inline]

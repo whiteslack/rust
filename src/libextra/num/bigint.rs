@@ -201,6 +201,8 @@ impl Shl<uint, BigUint> for BigUint {
     }
 }
 
+impl ShlAssign<uint> for BigUint;
+
 impl Shr<uint, BigUint> for BigUint {
     #[inline]
     fn shr(&self, rhs: &uint) -> BigUint {
@@ -209,6 +211,8 @@ impl Shr<uint, BigUint> for BigUint {
         return self.shr_unit(n_unit).shr_bits(n_bits);
     }
 }
+
+impl ShrAssign<uint> for BigUint;
 
 impl Zero for BigUint {
     #[inline]
@@ -244,6 +248,8 @@ impl Add<BigUint, BigUint> for BigUint {
     }
 }
 
+impl AddAssign<BigUint> for BigUint;
+
 impl Sub<BigUint, BigUint> for BigUint {
     fn sub(&self, other: &BigUint) -> BigUint {
         let new_len = num::max(self.data.len(), other.data.len());
@@ -268,6 +274,8 @@ impl Sub<BigUint, BigUint> for BigUint {
         return BigUint::new(diff);
     }
 }
+
+impl SubAssign<BigUint> for BigUint;
 
 impl Mul<BigUint, BigUint> for BigUint {
     fn mul(&self, other: &BigUint) -> BigUint {
@@ -335,6 +343,8 @@ impl Mul<BigUint, BigUint> for BigUint {
     }
 }
 
+impl MulAssign<BigUint> for BigUint;
+
 impl Div<BigUint, BigUint> for BigUint {
     #[inline]
     fn div(&self, other: &BigUint) -> BigUint {
@@ -343,6 +353,8 @@ impl Div<BigUint, BigUint> for BigUint {
     }
 }
 
+impl DivAssign<BigUint> for BigUint;
+
 impl Rem<BigUint, BigUint> for BigUint {
     #[inline]
     fn rem(&self, other: &BigUint) -> BigUint {
@@ -350,6 +362,8 @@ impl Rem<BigUint, BigUint> for BigUint {
         return r;
     }
 }
+
+impl RemAssign<BigUint> for BigUint;
 
 impl Neg<BigUint> for BigUint {
     #[inline]
@@ -969,12 +983,16 @@ impl Shl<uint, BigInt> for BigInt {
     }
 }
 
+impl ShlAssign<uint> for BigInt;
+
 impl Shr<uint, BigInt> for BigInt {
     #[inline]
     fn shr(&self, rhs: &uint) -> BigInt {
         BigInt::from_biguint(self.sign, self.data >> *rhs)
     }
 }
+
+impl ShrAssign<uint> for BigInt;
 
 impl Zero for BigInt {
     #[inline]
@@ -1038,6 +1056,8 @@ impl Add<BigInt, BigInt> for BigInt {
     }
 }
 
+impl AddAssign<BigInt> for BigInt;
+
 impl Sub<BigInt, BigInt> for BigInt {
     #[inline]
     fn sub(&self, other: &BigInt) -> BigInt {
@@ -1056,6 +1076,8 @@ impl Sub<BigInt, BigInt> for BigInt {
     }
 }
 
+impl SubAssign<BigInt> for BigInt;
+
 impl Mul<BigInt, BigInt> for BigInt {
     #[inline]
     fn mul(&self, other: &BigInt) -> BigInt {
@@ -1071,6 +1093,8 @@ impl Mul<BigInt, BigInt> for BigInt {
     }
 }
 
+impl MulAssign<BigInt> for BigInt;
+
 impl Div<BigInt, BigInt> for BigInt {
     #[inline]
     fn div(&self, other: &BigInt) -> BigInt {
@@ -1079,6 +1103,8 @@ impl Div<BigInt, BigInt> for BigInt {
     }
 }
 
+impl DivAssign<BigInt> for BigInt;
+
 impl Rem<BigInt, BigInt> for BigInt {
     #[inline]
     fn rem(&self, other: &BigInt) -> BigInt {
@@ -1086,6 +1112,8 @@ impl Rem<BigInt, BigInt> for BigInt {
         return r;
     }
 }
+
+impl RemAssign<BigInt> for BigInt;
 
 impl Neg<BigInt> for BigInt {
     #[inline]
