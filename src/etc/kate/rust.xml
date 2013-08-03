@@ -56,16 +56,26 @@
 		<item> Ptr </item>
 		<item> Drop </item>
 		<item> Add </item>
+		<item> AddAssign </item>
 		<item> Sub </item>
+		<item> SubAssign </item>
 		<item> Mul </item>
-		<item> Quot </item>
+		<item> MulAssign </item>
+		<item> Div </item>
+		<item> DivAssign </item>
 		<item> Rem </item>
+		<item> RemAssign </item>
 		<item> Neg </item>
 		<item> BitAnd </item>
+		<item> BitAndAssign </item>
 		<item> BitOr </item>
+		<item> BitOrAssign </item>
 		<item> BitXor </item>
+		<item> BitXorAssign </item>
 		<item> Shl </item>
+		<item> ShlAssign </item>
 		<item> Shr </item>
+		<item> ShrAssign </item>
 		<item> Index </item>
 		<item> Not </item>
 	</list>

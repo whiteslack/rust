@@ -54,6 +54,9 @@ syn keyword   rustTrait       Add Sub Mul Div Rem Neg Not
 syn keyword   rustTrait       BitAnd BitOr BitXor
 syn keyword   rustTrait       Drop
 syn keyword   rustTrait       Shl Shr Index
+syn keyword   rustTrait       AddAssign SubAssign MulAssign DivAssign
+syn keyword   rustTrait       RemAssign BitAndAssign BitOrAssign
+syn keyword   rustTrait       BitXorAssign ShlAssign ShrAssign
 syn keyword   rustEnum        Option
 syn keyword   rustEnumVariant Some None
 syn keyword   rustEnum        Result
