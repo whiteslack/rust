@@ -113,6 +113,13 @@ pub trait Add<RHS,Result> {
     fn add(&self, rhs: &RHS) -> Result;
 }
 
+#[lang="add_assign"]
+pub trait AddAssign<RHS>: Add<RHS, Self> {
+    fn add_assign(&mut self, rhs: &RHS) {
+        *self = *self + *rhs;
+    }
+}
+
 /**
  *
  * The `Sub` trait is used to specify the functionality of `-`.
@@ -140,6 +147,13 @@ pub trait Add<RHS,Result> {
 #[lang="sub"]
 pub trait Sub<RHS,Result> {
     fn sub(&self, rhs: &RHS) -> Result;
+}
+
+#[lang="sub_assign"]
+pub trait SubAssign<RHS>: Sub<RHS, Self> {
+    fn sub_assign(&mut self, rhs: &RHS) {
+        *self = *self - *rhs;
+    }
 }
 
 /**
@@ -171,6 +185,13 @@ pub trait Mul<RHS,Result> {
     fn mul(&self, rhs: &RHS) -> Result;
 }
 
+#[lang="mul_assign"]
+pub trait MulAssign<RHS>: Mul<RHS, Self> {
+    fn mul_assign(&mut self, rhs: &RHS) {
+        *self = *self * *rhs;
+    }
+}
+
 /**
  *
  * The `Div` trait is used to specify the functionality of `/`.
@@ -200,6 +221,13 @@ pub trait Div<RHS,Result> {
     fn div(&self, rhs: &RHS) -> Result;
 }
 
+#[lang="div_assign"]
+pub trait DivAssign<RHS>: Div<RHS, Self> {
+    fn div_assign(&mut self, rhs: &RHS) {
+        *self = *self / *rhs;
+    }
+}
+
 /**
  *
  * The `Rem` trait is used to specify the functionality of `%`.
@@ -227,6 +255,13 @@ pub trait Div<RHS,Result> {
 #[lang="rem"]
 pub trait Rem<RHS,Result> {
     fn rem(&self, rhs: &RHS) -> Result;
+}
+
+#[lang="rem_assign"]
+pub trait RemAssign<RHS>: Rem<RHS, Self> {
+    fn rem_assign(&mut self, rhs: &RHS) {
+        *self = *self % *rhs;
+    }
 }
 
 /**
@@ -316,6 +351,13 @@ pub trait BitAnd<RHS,Result> {
     fn bitand(&self, rhs: &RHS) -> Result;
 }
 
+#[lang="bitand_assign"]
+pub trait BitAndAssign<RHS>: BitAnd<RHS, Self> {
+    fn bitand_assign(&mut self, rhs: &RHS) {
+        *self = *self & *rhs;
+    }
+}
+
 /**
  *
  * The `BitOr` trait is used to specify the functionality of `|`.
@@ -343,6 +385,13 @@ pub trait BitAnd<RHS,Result> {
 #[lang="bitor"]
 pub trait BitOr<RHS,Result> {
     fn bitor(&self, rhs: &RHS) -> Result;
+}
+
+#[lang="bitor_assign"]
+pub trait BitOrAssign<RHS>: BitOr<RHS, Self> {
+    fn bitor_assign(&mut self, rhs: &RHS) {
+        *self = *self | *rhs;
+    }
 }
 
 /**
@@ -374,6 +423,13 @@ pub trait BitXor<RHS,Result> {
     fn bitxor(&self, rhs: &RHS) -> Result;
 }
 
+#[lang="bitxor_assign"]
+pub trait BitXorAssign<RHS>: BitXor<RHS, Self> {
+    fn bitxor_assign(&mut self, rhs: &RHS) {
+        *self = *self ^ *rhs;
+    }
+}
+
 /**
  *
  * The `Shl` trait is used to specify the functionality of `<<`.
@@ -403,6 +459,13 @@ pub trait Shl<RHS,Result> {
     fn shl(&self, rhs: &RHS) -> Result;
 }
 
+#[lang="shl_assign"]
+pub trait ShlAssign<RHS>: Shl<RHS, Self> {
+    fn shl_assign(&mut self, rhs: &RHS) {
+        *self = *self << *rhs;
+    }
+}
+
 /**
  *
  * The `Shr` trait is used to specify the functionality of `>>`.
@@ -430,6 +493,13 @@ pub trait Shl<RHS,Result> {
 #[lang="shr"]
 pub trait Shr<RHS,Result> {
     fn shr(&self, rhs: &RHS) -> Result;
+}
+
+#[lang="shr_assign"]
+pub trait ShrAssign<RHS>: Shr<RHS, Self> {
+    fn shr_assign(&mut self, rhs: &RHS) {
+        *self = *self >> *rhs;
+    }
 }
 
 /**
