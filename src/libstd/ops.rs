@@ -115,6 +115,7 @@ pub trait Add<RHS,Result> {
 
 #[lang="add_assign"]
 pub trait AddAssign<RHS>: Add<RHS, Self> {
+    #[inline]
     fn add_assign(&mut self, rhs: &RHS) {
         *self = *self + *rhs;
     }
@@ -151,6 +152,7 @@ pub trait Sub<RHS,Result> {
 
 #[lang="sub_assign"]
 pub trait SubAssign<RHS>: Sub<RHS, Self> {
+    #[inline]
     fn sub_assign(&mut self, rhs: &RHS) {
         *self = *self - *rhs;
     }
@@ -187,6 +189,7 @@ pub trait Mul<RHS,Result> {
 
 #[lang="mul_assign"]
 pub trait MulAssign<RHS>: Mul<RHS, Self> {
+    #[inline]
     fn mul_assign(&mut self, rhs: &RHS) {
         *self = *self * *rhs;
     }
@@ -223,6 +226,7 @@ pub trait Div<RHS,Result> {
 
 #[lang="div_assign"]
 pub trait DivAssign<RHS>: Div<RHS, Self> {
+    #[inline]
     fn div_assign(&mut self, rhs: &RHS) {
         *self = *self / *rhs;
     }
@@ -259,6 +263,7 @@ pub trait Rem<RHS,Result> {
 
 #[lang="rem_assign"]
 pub trait RemAssign<RHS>: Rem<RHS, Self> {
+    #[inline]
     fn rem_assign(&mut self, rhs: &RHS) {
         *self = *self % *rhs;
     }
@@ -353,6 +358,7 @@ pub trait BitAnd<RHS,Result> {
 
 #[lang="bitand_assign"]
 pub trait BitAndAssign<RHS>: BitAnd<RHS, Self> {
+    #[inline]
     fn bitand_assign(&mut self, rhs: &RHS) {
         *self = *self & *rhs;
     }
@@ -389,6 +395,7 @@ pub trait BitOr<RHS,Result> {
 
 #[lang="bitor_assign"]
 pub trait BitOrAssign<RHS>: BitOr<RHS, Self> {
+    #[inline]
     fn bitor_assign(&mut self, rhs: &RHS) {
         *self = *self | *rhs;
     }
@@ -425,6 +432,7 @@ pub trait BitXor<RHS,Result> {
 
 #[lang="bitxor_assign"]
 pub trait BitXorAssign<RHS>: BitXor<RHS, Self> {
+    #[inline]
     fn bitxor_assign(&mut self, rhs: &RHS) {
         *self = *self ^ *rhs;
     }
@@ -461,6 +469,7 @@ pub trait Shl<RHS,Result> {
 
 #[lang="shl_assign"]
 pub trait ShlAssign<RHS>: Shl<RHS, Self> {
+    #[inline]
     fn shl_assign(&mut self, rhs: &RHS) {
         *self = *self << *rhs;
     }
@@ -497,6 +506,7 @@ pub trait Shr<RHS,Result> {
 
 #[lang="shr_assign"]
 pub trait ShrAssign<RHS>: Shr<RHS, Self> {
+    #[inline]
     fn shr_assign(&mut self, rhs: &RHS) {
         *self = *self >> *rhs;
     }
