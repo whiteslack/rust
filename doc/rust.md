@@ -1859,28 +1859,48 @@ A complete list of the built-in language items follows:
   : Have finalizers.
 `add`
   : Elements can be added (for example, integers and floats).
+`add_assign`
+  : Elements can be added with augmented assignment.
 `sub`
   : Elements can be subtracted.
+`sub_assign`
+  : Elements can be subtracted with augmented assignment.
 `mul`
   : Elements can be multiplied.
+`mul_assign`
+  : Elements can be multiplied with augmented assignment.
 `div`
   : Elements have a division operation.
+`div_assign`
+  : Elements have a division operation with augmented assignment.
 `rem`
   : Elements have a remainder operation.
+`rem_assign`
+  : Elements have a remainder operation with augmented assignment.
 `neg`
   : Elements can be negated arithmetically.
 `not`
   : Elements can be negated logically.
 `bitxor`
   : Elements have an exclusive-or operation.
+`bitxor_assign`
+  : Elements have an exclusive-or operation with augmented assignment.
 `bitand`
   : Elements have a bitwise `and` operation.
+`bitand_assign`
+  : Elements have a bitwise `and` operation with augmented assignment.
 `bitor`
   : Elements have a bitwise `or` operation.
+`bitor_assign`
+  : Elements have a bitwise `or` operation with augmented assignment.
 `shl`
   : Elements have a left shift operation.
+`shl_assign`
+  : Elements have a left shift operation with augmented assignment.
 `shr`
   : Elements have a right shift operation.
+`shr_assign`
+  : Elements have a right shift operation with augmented assignment.
 `index`
   : Elements can be indexed.
 `eq`
