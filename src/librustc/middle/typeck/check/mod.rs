@@ -2032,7 +2032,6 @@ pub fn check_expr_with_unifier(fcx: @mut FnCtxt,
         }
     }
 
-    // could be either a expr_binop or an expr_assign_binop
     fn check_binop(fcx: @mut FnCtxt,
                    callee_id: ast::NodeId,
                    expr: @ast::Expr,
@@ -2144,6 +2143,95 @@ pub fn check_expr_with_unifier(fcx: @mut FnCtxt,
                 _ => ()
             }
         }
+
+        ty::mk_err()
+    }
+
+    fn check_assign_op(fcx: @mut FnCtxt,
+                       callee_id: ast::NodeId,
+                       expr: @ast::expr,
+                       op: ast::binop,
+                       lhs: @ast::expr,
+                       rhs: @ast::expr,
+                       // Used only in the error case
+                       expected_result: Option<ty::t>
+                      ) {
+        let tcx = fcx.ccx.tcx;
+
+        check_expr(fcx, lhs);
+        // Callee does bot / err checking
+        let lhs_t = structurally_resolved_type(fcx, lhs.span,
+                                               fcx.expr_ty(lhs));
+
+        if ty::type_is_integral(lhs_t) && ast_util::is_shift_binop(op) {
+            // Shift is a special case: rhs can be any integral type
+            check_expr(fcx, rhs);
+            let rhs_t = fcx.expr_ty(rhs);
+            require_integral(fcx, rhs.span, rhs_t);
+            fcx.write_ty(expr.id, lhs_t);
+            return;
+        }
+
+        if ty::is_binopable(tcx, lhs_t, op) {
+            let tvar = fcx.infcx().next_ty_var();
+            demand::suptype(fcx, expr.span, tvar, lhs_t);
+            check_expr_has_type(fcx, rhs, tvar);
+
+            let result_t = match op {
+                ast::BiEq | ast::BiNe | ast::BiLt | ast::BiLe | ast::BiGe |
+                ast::BiGt => {
+                    ty::mk_bool()
+                }
+                _ => {
+                    lhs_t
+                }
+            };
+
+            fcx.write_ty(expr.id, result_t);
+            return;
+        }
+
+        // Check for overloaded operators if allowed.
+        let result_t = check_user_assign_op(fcx,
+                                            callee_id,
+                                            expr,
+                                            lhs,
+                                            lhs_t,
+                                            op,
+                                            rhs,
+                                            expected_result);
+
+        fcx.write_ty(expr.id, result_t);
+        if ty::type_is_error(result_t) {
+            fcx.write_ty(rhs.id, result_t);
+        }
+    }
+
+    fn check_user_assign_op(fcx: @mut FnCtxt,
+                        callee_id: ast::NodeId,
+                        ex: @ast::expr,
+                        lhs_expr: @ast::expr,
+                        lhs_resolved_t: ty::t,
+                        op: ast::binop,
+                        rhs: @ast::expr,
+                       expected_result: Option<ty::t>) -> ty::t {
+        match ast_util::assign_op_to_method_name(op) {
+            Some(ref name) => {
+                let if_op_unbound = || {
+                    fcx.type_error_message(ex.span, |actual| {
+                        fmt!("binary assignment operation %s cannot be applied to type `%s`",
+                             ast_util::assign_op_to_str(op).get(), actual)},
+                            lhs_resolved_t, None)
+                };
+                // No need for a separate lookup_assign_op_method, lookup_op_method will do
+                return lookup_op_method(fcx, callee_id, ex, lhs_expr, lhs_resolved_t,
+                                       fcx.tcx().sess.ident_of(*name),
+                                       ~[rhs], DoDerefArgs, DontAutoderefReceiver, if_op_unbound,
+                                       expected_result);
+            }
+            None => ()
+        };
+        check_expr(fcx, rhs);
 
         ty::mk_err()
     }
@@ -2652,29 +2740,28 @@ pub fn check_expr_with_unifier(fcx: @mut FnCtxt,
         }
       }
       ast::ExprAssignOp(callee_id, op, lhs, rhs) => {
-        check_binop(fcx,
-                    callee_id,
-                    expr,
-                    op,
-                    lhs,
-                    rhs,
-                    expected);
+        check_assign_op(fcx,
+                        callee_id,
+                        expr,
+                        op,
+                        lhs,
+                        rhs,
+                        expected);
 
-        let lhs_t = fcx.expr_ty(lhs);
-        let result_t = fcx.expr_ty(expr);
-        demand::suptype(fcx, expr.span, result_t, lhs_t);
+        let lhs_ty = fcx.expr_ty(lhs);
+        let rhs_ty = fcx.expr_ty(rhs);
 
         let tcx = fcx.tcx();
         if !ty::expr_is_lval(tcx, fcx.ccx.method_map, lhs) {
             tcx.sess.span_err(lhs.span, "illegal left-hand side expression");
         }
 
-        // Overwrite result of check_binop...this preserves existing behavior
-        // but seems quite dubious with regard to user-defined methods
-        // and so forth. - Niko
-        if !ty::type_is_error(result_t)
-            && !ty::type_is_bot(result_t) {
-            fcx.write_nil(expr.id);
+        if ty::type_is_error(lhs_ty) || ty::type_is_error(rhs_ty) {
+            fcx.write_error(id);
+        } else if ty::type_is_bot(lhs_ty) || ty::type_is_bot(rhs_ty) {
+            fcx.write_bot(id);
+        } else {
+            fcx.write_nil(id);
         }
       }
       ast::ExprUnary(callee_id, unop, oprnd) => {

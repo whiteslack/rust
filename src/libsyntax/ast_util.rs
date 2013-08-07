@@ -75,6 +75,22 @@ pub fn def_id_of_def(d: Def) -> DefId {
     }
 }
 
+pub fn assign_op_to_str(op: BinOp) -> Option<~str> {
+    match op {
+      BiAdd => return Some(~"+="),
+      BiSub => return Some(~"-="),
+      BiMul => return Some(~"*="),
+      BiDiv => return Some(~"/="),
+      BiRem => return Some(~"%="),
+      BiBitXor => return Some(~"^="),
+      BiBitAnd => return Some(~"&="),
+      BiBitOr => return Some(~"|="),
+      BiShl => return Some(~"<<="),
+      BiShr => return Some(~">>="),
+      BiLt | BiLe | BiGe | BiGt | BiEq | BiNe | BiAnd | BiOr => return None
+    }
+}
+
 pub fn binop_to_str(op: BinOp) -> ~str {
     match op {
       BiAdd => return ~"+",
@@ -95,6 +111,22 @@ pub fn binop_to_str(op: BinOp) -> ~str {
       BiNe => return ~"!=",
       BiGe => return ~">=",
       BiGt => return ~">"
+    }
+}
+
+pub fn assign_op_to_method_name(op: BinOp) -> Option<~str> {
+    match op {
+      add => return Some(~"add_assign"),
+      subtract => return Some(~"sub_assign"),
+      mul => return Some(~"mul_assign"),
+      div => return Some(~"div_assign"),
+      rem => return Some(~"rem_assign"),
+      bitxor => return Some(~"bitxor_assign"),
+      bitand => return Some(~"bitand_assign"),
+      bitor => return Some(~"bitor_assign"),
+      shl => return Some(~"shl_assign"),
+      shr => return Some(~"shr_assign"),
+      lt | le | ge | gt | eq | ne | and | or => return None
     }
 }
 
