@@ -2220,7 +2220,7 @@ pub fn check_expr_with_unifier(fcx: @mut FnCtxt,
                 let if_op_unbound = || {
                     fcx.type_error_message(ex.span, |actual| {
                         fmt!("binary assignment operation %s cannot be applied to type `%s`",
-                             ast_util::assign_op_to_str(op).get(), actual)},
+                             ast_util::assign_op_to_str(op).unwrap(), actual)},
                             lhs_resolved_t, None)
                 };
                 // No need for a separate lookup_assign_op_method, lookup_op_method will do
