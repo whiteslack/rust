@@ -116,17 +116,17 @@ pub fn binop_to_str(op: BinOp) -> ~str {
 
 pub fn assign_op_to_method_name(op: BinOp) -> Option<~str> {
     match op {
-      add => return Some(~"add_assign"),
-      subtract => return Some(~"sub_assign"),
-      mul => return Some(~"mul_assign"),
-      div => return Some(~"div_assign"),
-      rem => return Some(~"rem_assign"),
-      bitxor => return Some(~"bitxor_assign"),
-      bitand => return Some(~"bitand_assign"),
-      bitor => return Some(~"bitor_assign"),
-      shl => return Some(~"shl_assign"),
-      shr => return Some(~"shr_assign"),
-      lt | le | ge | gt | eq | ne | and | or => return None
+      BiAdd => return Some(~"add_assign"),
+      BiSub => return Some(~"sub_assign"),
+      BiMul => return Some(~"mul_assign"),
+      BiDiv => return Some(~"div_assign"),
+      BiRem => return Some(~"rem_assign"),
+      BiBitXor => return Some(~"bitxor_assign"),
+      BiBitAnd => return Some(~"bitand_assign"),
+      BiBitOr => return Some(~"bitor_assign"),
+      BiShl => return Some(~"shl_assign"),
+      BiShr => return Some(~"shr_assign"),
+      BiLt | BiLe | BiGe | BiGt | BiEq | BiNe | BiAnd | BiOr => return None
     }
 }
 

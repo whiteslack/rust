@@ -256,7 +256,7 @@ impl Add<f32,f32> for f32 {
 }
 
 #[cfg(not(test))]
-impl AddAssign<f32> for f32;
+impl AddAssign<f32> for f32 {}
 
 #[cfg(not(test))]
 impl Sub<f32,f32> for f32 {
@@ -265,7 +265,7 @@ impl Sub<f32,f32> for f32 {
 }
 
 #[cfg(not(test))]
-impl SubAssign<f32> for f32;
+impl SubAssign<f32> for f32 {}
 
 #[cfg(not(test))]
 impl Mul<f32,f32> for f32 {
@@ -274,7 +274,7 @@ impl Mul<f32,f32> for f32 {
 }
 
 #[cfg(not(test))]
-impl MulAssign<f32> for f32;
+impl MulAssign<f32> for f32 {}
 
 #[cfg(not(test))]
 impl Div<f32,f32> for f32 {
@@ -283,7 +283,7 @@ impl Div<f32,f32> for f32 {
 }
 
 #[cfg(not(test))]
-impl DivAssign<f32> for f32;
+impl DivAssign<f32> for f32 {}
 
 #[cfg(not(test))]
 impl Rem<f32,f32> for f32 {
@@ -292,7 +292,7 @@ impl Rem<f32,f32> for f32 {
 }
 
 #[cfg(not(test))]
-impl RemAssign<f32> for f32;
+impl RemAssign<f32> for f32 {}
 
 #[cfg(not(test))]
 impl Neg<f32> for f32 {

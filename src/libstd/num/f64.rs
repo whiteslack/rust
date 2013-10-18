@@ -279,7 +279,7 @@ impl Add<f64,f64> for f64 {
 }
 
 #[cfg(not(test))]
-impl AddAssign<f64> for f64;
+impl AddAssign<f64> for f64 {}
 
 #[cfg(not(test))]
 impl Sub<f64,f64> for f64 {
@@ -288,7 +288,7 @@ impl Sub<f64,f64> for f64 {
 }
 
 #[cfg(not(test))]
-impl SubAssign<f64> for f64;
+impl SubAssign<f64> for f64 {}
 
 #[cfg(not(test))]
 impl Mul<f64,f64> for f64 {
@@ -297,7 +297,7 @@ impl Mul<f64,f64> for f64 {
 }
 
 #[cfg(not(test))]
-impl MulAssign<f64> for f64;
+impl MulAssign<f64> for f64 {}
 
 #[cfg(not(test))]
 impl Div<f64,f64> for f64 {
@@ -306,7 +306,7 @@ impl Div<f64,f64> for f64 {
 }
 
 #[cfg(not(test))]
-impl DivAssign<f64> for f64;
+impl DivAssign<f64> for f64 {}
 
 #[cfg(not(test))]
 impl Rem<f64,f64> for f64 {
@@ -315,7 +315,7 @@ impl Rem<f64,f64> for f64 {
 }
 
 #[cfg(not(test))]
-impl RemAssign<f64> for f64;
+impl RemAssign<f64> for f64 {}
 
 #[cfg(not(test))]
 impl Neg<f64> for f64 {

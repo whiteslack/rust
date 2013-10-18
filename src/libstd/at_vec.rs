@@ -160,7 +160,7 @@ pub mod traits {
         }
     }
 
-    impl<'self, T: Clone, V: Vector<T>> AddAssign<V> for @[T];
+    impl<'self, T: Clone, V: Vector<T>> AddAssign<V> for @[T] {}
 }
 
 #[cfg(test)]

@@ -2149,10 +2149,10 @@ pub fn check_expr_with_unifier(fcx: @mut FnCtxt,
 
     fn check_assign_op(fcx: @mut FnCtxt,
                        callee_id: ast::NodeId,
-                       expr: @ast::expr,
-                       op: ast::binop,
-                       lhs: @ast::expr,
-                       rhs: @ast::expr,
+                       expr: @ast::Expr,
+                       op: ast::BinOp,
+                       lhs: @ast::Expr,
+                       rhs: @ast::Expr,
                        // Used only in the error case
                        expected_result: Option<ty::t>
                       ) {
@@ -2209,23 +2209,23 @@ pub fn check_expr_with_unifier(fcx: @mut FnCtxt,
 
     fn check_user_assign_op(fcx: @mut FnCtxt,
                         callee_id: ast::NodeId,
-                        ex: @ast::expr,
-                        lhs_expr: @ast::expr,
+                        ex: @ast::Expr,
+                        lhs_expr: @ast::Expr,
                         lhs_resolved_t: ty::t,
-                        op: ast::binop,
-                        rhs: @ast::expr,
+                        op: ast::BinOp,
+                        rhs: @ast::Expr,
                        expected_result: Option<ty::t>) -> ty::t {
         match ast_util::assign_op_to_method_name(op) {
             Some(ref name) => {
                 let if_op_unbound = || {
                     fcx.type_error_message(ex.span, |actual| {
-                        fmt!("binary assignment operation %s cannot be applied to type `%s`",
-                             ast_util::assign_op_to_str(op).unwrap(), actual)},
+                        format!("binary assignment operation {} cannot be applied to type `{}`",
+                                ast_util::assign_op_to_str(op).unwrap(), actual)},
                             lhs_resolved_t, None)
                 };
                 // No need for a separate lookup_assign_op_method, lookup_op_method will do
                 return lookup_op_method(fcx, callee_id, ex, lhs_expr, lhs_resolved_t,
-                                       fcx.tcx().sess.ident_of(*name),
+                                       fcx.tcx().sess.ident_of(*name).name,
                                        ~[rhs], DoDerefArgs, DontAutoderefReceiver, if_op_unbound,
                                        expected_result);
             }

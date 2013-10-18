@@ -163,7 +163,7 @@ impl<T: Clone + Integer + Ord>
     }
 }
 
-impl<T: Clone + Integer + Ord> MulAssign<Ratio<T>> for Ratio<T>;
+impl<T: Clone + Integer + Ord> MulAssign<Ratio<T>> for Ratio<T> {}
 
 // (a/b) / (c/d) = (a*d)/(b*c)
 impl<T: Clone + Integer + Ord>
@@ -174,7 +174,7 @@ impl<T: Clone + Integer + Ord>
     }
 }
 
-impl<T: Clone + Integer + Ord> DivAssign<Ratio<T>> for Ratio<T>;
+impl<T: Clone + Integer + Ord> DivAssign<Ratio<T>> for Ratio<T> {}
 
 // Abstracts the a/b `op` c/d = (a*d `op` b*d) / (b*d) pattern
 macro_rules! arith_impl {
@@ -192,15 +192,15 @@ macro_rules! arith_impl {
 
 // a/b + c/d = (a*d + b*c)/(b*d
 arith_impl!(impl Add, add)
-impl<T: Clone + Integer + Ord> AddAssign<Ratio<T>> for Ratio<T>;
+impl<T: Clone + Integer + Ord> AddAssign<Ratio<T>> for Ratio<T> {}
 
 // a/b - c/d = (a*d - b*c)/(b*d)
 arith_impl!(impl Sub, sub)
-impl<T: Clone + Integer + Ord> SubAssign<Ratio<T>> for Ratio<T>;
+impl<T: Clone + Integer + Ord> SubAssign<Ratio<T>> for Ratio<T> {}
 
 // a/b % c/d = (a*d % b*c)/(b*d)
 arith_impl!(impl Rem, rem)
-impl<T: Clone + Integer + Ord> RemAssign<Ratio<T>> for Ratio<T>;
+impl<T: Clone + Integer + Ord> RemAssign<Ratio<T>> for Ratio<T> {}
 
 impl<T: Clone + Integer + Ord>
     Neg<Ratio<T>> for Ratio<T> {

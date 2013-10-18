@@ -201,7 +201,7 @@ impl Shl<uint, BigUint> for BigUint {
     }
 }
 
-impl ShlAssign<uint> for BigUint;
+impl ShlAssign<uint> for BigUint {}
 
 impl Shr<uint, BigUint> for BigUint {
     #[inline]
@@ -212,7 +212,7 @@ impl Shr<uint, BigUint> for BigUint {
     }
 }
 
-impl ShrAssign<uint> for BigUint;
+impl ShrAssign<uint> for BigUint {}
 
 impl Zero for BigUint {
     #[inline]
@@ -248,7 +248,7 @@ impl Add<BigUint, BigUint> for BigUint {
     }
 }
 
-impl AddAssign<BigUint> for BigUint;
+impl AddAssign<BigUint> for BigUint {}
 
 impl Sub<BigUint, BigUint> for BigUint {
     fn sub(&self, other: &BigUint) -> BigUint {
@@ -275,7 +275,7 @@ impl Sub<BigUint, BigUint> for BigUint {
     }
 }
 
-impl SubAssign<BigUint> for BigUint;
+impl SubAssign<BigUint> for BigUint {}
 
 impl Mul<BigUint, BigUint> for BigUint {
     fn mul(&self, other: &BigUint) -> BigUint {
@@ -343,7 +343,7 @@ impl Mul<BigUint, BigUint> for BigUint {
     }
 }
 
-impl MulAssign<BigUint> for BigUint;
+impl MulAssign<BigUint> for BigUint {}
 
 impl Div<BigUint, BigUint> for BigUint {
     #[inline]
@@ -353,7 +353,7 @@ impl Div<BigUint, BigUint> for BigUint {
     }
 }
 
-impl DivAssign<BigUint> for BigUint;
+impl DivAssign<BigUint> for BigUint {}
 
 impl Rem<BigUint, BigUint> for BigUint {
     #[inline]
@@ -363,7 +363,7 @@ impl Rem<BigUint, BigUint> for BigUint {
     }
 }
 
-impl RemAssign<BigUint> for BigUint;
+impl RemAssign<BigUint> for BigUint {}
 
 impl Neg<BigUint> for BigUint {
     #[inline]
@@ -983,7 +983,7 @@ impl Shl<uint, BigInt> for BigInt {
     }
 }
 
-impl ShlAssign<uint> for BigInt;
+impl ShlAssign<uint> for BigInt {}
 
 impl Shr<uint, BigInt> for BigInt {
     #[inline]
@@ -992,7 +992,7 @@ impl Shr<uint, BigInt> for BigInt {
     }
 }
 
-impl ShrAssign<uint> for BigInt;
+impl ShrAssign<uint> for BigInt {}
 
 impl Zero for BigInt {
     #[inline]
@@ -1056,7 +1056,7 @@ impl Add<BigInt, BigInt> for BigInt {
     }
 }
 
-impl AddAssign<BigInt> for BigInt;
+impl AddAssign<BigInt> for BigInt {}
 
 impl Sub<BigInt, BigInt> for BigInt {
     #[inline]
@@ -1076,7 +1076,7 @@ impl Sub<BigInt, BigInt> for BigInt {
     }
 }
 
-impl SubAssign<BigInt> for BigInt;
+impl SubAssign<BigInt> for BigInt {}
 
 impl Mul<BigInt, BigInt> for BigInt {
     #[inline]
@@ -1093,7 +1093,7 @@ impl Mul<BigInt, BigInt> for BigInt {
     }
 }
 
-impl MulAssign<BigInt> for BigInt;
+impl MulAssign<BigInt> for BigInt {}
 
 impl Div<BigInt, BigInt> for BigInt {
     #[inline]
@@ -1103,7 +1103,7 @@ impl Div<BigInt, BigInt> for BigInt {
     }
 }
 
-impl DivAssign<BigInt> for BigInt;
+impl DivAssign<BigInt> for BigInt {}
 
 impl Rem<BigInt, BigInt> for BigInt {
     #[inline]
@@ -1113,7 +1113,7 @@ impl Rem<BigInt, BigInt> for BigInt {
     }
 }
 
-impl RemAssign<BigInt> for BigInt;
+impl RemAssign<BigInt> for BigInt {}
 
 impl Neg<BigInt> for BigInt {
     #[inline]
