@@ -168,9 +168,9 @@ impl LanguageItems {
             47 => "ty_visitor",
             48 => "opaque",
 
-            39 => "event_loop_factory",
+            49 => "event_loop_factory",
 
-            40 => "type_id",
+            50 => "type_id",
 
             _ => "???"
         }
