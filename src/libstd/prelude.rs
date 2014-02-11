@@ -40,9 +40,12 @@
 // Reexported core operators
 #[doc(no_inline)] pub use kinds::{Copy, Send, Sized, Share};
 #[doc(no_inline)] pub use ops::{Add, Sub, Mul, Div, Rem, Neg, Not};
+#[doc(no_inline)] pub use ops::{AddAssign, SubAssign, MulAssign, DivAssign, RemAssign};
 #[doc(no_inline)] pub use ops::{BitAnd, BitOr, BitXor};
+#[doc(no_inline)] pub use ops::{BitAndAssign, BitOrAssign, BitXorAssign};
 #[doc(no_inline)] pub use ops::{Drop, Deref, DerefMut};
 #[doc(no_inline)] pub use ops::{Shl, Shr, Index};
+#[doc(no_inline)] pub use ops::{ShlAssign, ShrAssign};
 #[doc(no_inline)] pub use option::{Option, Some, None};
 #[doc(no_inline)] pub use result::{Result, Ok, Err};
 

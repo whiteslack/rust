@@ -20,7 +20,7 @@ use iter::{DoubleEndedIterator, FromIterator, Extendable, Iterator, range};
 use mem;
 use num::{CheckedMul, CheckedAdd};
 use num;
-use ops::{Add, Drop};
+use ops::{Add, AddAssign, Drop};
 use option::{None, Option, Some, Expect};
 use ptr::RawPtr;
 use ptr;
@@ -1421,6 +1421,13 @@ impl<T: Clone, V: Vector<T>> Add<V, Vec<T>> for Vec<T> {
         res.push_all(self.as_slice());
         res.push_all(rhs.as_slice());
         res
+    }
+}
+
+impl<T: Clone, V: Vector<T>> AddAssign<V> for Vec<T> {
+    #[inline]
+    fn add_assign(&mut self, rhs: &V) {
+        self.push_all(rhs.as_slice());
     }
 }
 

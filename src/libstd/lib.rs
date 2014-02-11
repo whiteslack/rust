@@ -276,4 +276,7 @@ mod std {
     #[cfg(test)] pub use os = realstd::os;
     // The test runner requires std::slice::Vector, so re-export std::slice just for it.
     #[cfg(test)] pub use slice;
+
+    // NOTE: remove after next snapshot (used for bitflags!)
+    pub use ops;
 }

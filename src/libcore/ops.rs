@@ -115,6 +115,18 @@ pub trait Add<RHS,Result> {
     fn add(&self, rhs: &RHS) -> Result;
 }
 
+/**
+ * The `AddAssign` trait is used to specify the functionality of `+=`.
+ */
+#[lang="add_assign"]
+pub trait AddAssign<RHS>: Add<RHS, Self> {
+    /// The method for the `+=` operator
+    #[inline]
+    fn add_assign(&mut self, rhs: &RHS) {
+        *self = *self + *rhs;
+    }
+}
+
 macro_rules! add_impl(
     ($($t:ty)*) => ($(
         #[cfg(not(test))]
@@ -122,6 +134,8 @@ macro_rules! add_impl(
             #[inline]
             fn add(&self, other: &$t) -> $t { (*self) + (*other) }
         }
+        #[cfg(not(test))]
+        impl AddAssign<$t> for $t { }
     )*)
 )
 
@@ -157,6 +171,18 @@ pub trait Sub<RHS,Result> {
     fn sub(&self, rhs: &RHS) -> Result;
 }
 
+/**
+ * The `SubAssign` trait is used to specify the functionality of `-=`.
+ */
+#[lang="sub_assign"]
+pub trait SubAssign<RHS>: Sub<RHS, Self> {
+    /// The method for the `-=` operator
+    #[inline]
+    fn sub_assign(&mut self, rhs: &RHS) {
+        *self = *self - *rhs;
+    }
+}
+
 macro_rules! sub_impl(
     ($($t:ty)*) => ($(
         #[cfg(not(test))]
@@ -164,6 +190,8 @@ macro_rules! sub_impl(
             #[inline]
             fn sub(&self, other: &$t) -> $t { (*self) - (*other) }
         }
+        #[cfg(not(test))]
+        impl SubAssign<$t> for $t { }
     )*)
 )
 
@@ -199,6 +227,18 @@ pub trait Mul<RHS,Result> {
     fn mul(&self, rhs: &RHS) -> Result;
 }
 
+/**
+ * The `MulAssign` trait is used to specify the functionality of `*=`.
+ */
+#[lang="mul_assign"]
+pub trait MulAssign<RHS>: Mul<RHS, Self> {
+    /// The method for the `*=` operator
+    #[inline]
+    fn mul_assign(&mut self, rhs: &RHS) {
+        *self = *self * *rhs;
+    }
+}
+
 macro_rules! mul_impl(
     ($($t:ty)*) => ($(
         #[cfg(not(test))]
@@ -206,6 +246,8 @@ macro_rules! mul_impl(
             #[inline]
             fn mul(&self, other: &$t) -> $t { (*self) * (*other) }
         }
+        #[cfg(not(test))]
+        impl MulAssign<$t> for $t { }
     )*)
 )
 
@@ -241,6 +283,18 @@ pub trait Div<RHS,Result> {
     fn div(&self, rhs: &RHS) -> Result;
 }
 
+/**
+ * The `DivAssign` trait is used to specify the functionality of `/=`.
+ */
+#[lang="div_assign"]
+pub trait DivAssign<RHS>: Div<RHS, Self> {
+    /// The method for the `/=` operator
+    #[inline]
+    fn div_assign(&mut self, rhs: &RHS) {
+        *self = *self / *rhs;
+    }
+}
+
 macro_rules! div_impl(
     ($($t:ty)*) => ($(
         #[cfg(not(test))]
@@ -248,6 +302,8 @@ macro_rules! div_impl(
             #[inline]
             fn div(&self, other: &$t) -> $t { (*self) / (*other) }
         }
+        #[cfg(not(test))]
+        impl DivAssign<$t> for $t { }
     )*)
 )
 
@@ -283,6 +339,18 @@ pub trait Rem<RHS,Result> {
     fn rem(&self, rhs: &RHS) -> Result;
 }
 
+/**
+ * The `RemAssign` trait is used to specify the functionality of `%=`.
+ */
+#[lang="rem_assign"]
+pub trait RemAssign<RHS>: Rem<RHS, Self> {
+    /// The method for the `%=` operator
+    #[inline]
+    fn rem_assign(&mut self, rhs: &RHS) {
+        *self = *self % *rhs;
+    }
+}
+
 macro_rules! rem_impl(
     ($($t:ty)*) => ($(
         #[cfg(not(test))]
@@ -290,6 +358,8 @@ macro_rules! rem_impl(
             #[inline]
             fn rem(&self, other: &$t) -> $t { (*self) % (*other) }
         }
+        #[cfg(not(test))]
+        impl RemAssign<$t> for $t { }
     )*)
 )
 
@@ -303,6 +373,8 @@ macro_rules! rem_float_impl(
                 unsafe { $fmod(*self, *other) }
             }
         }
+        #[cfg(not(test))]
+        impl RemAssign<$t> for $t { }
     }
 )
 
@@ -442,6 +514,18 @@ pub trait BitAnd<RHS,Result> {
     fn bitand(&self, rhs: &RHS) -> Result;
 }
 
+/**
+ * The `BitAndAssign` trait is used to specify the functionality of `&=`.
+ */
+#[lang="bitand_assign"]
+pub trait BitAndAssign<RHS>: BitAnd<RHS, Self> {
+    /// The method for the `&=` operator
+    #[inline]
+    fn bitand_assign(&mut self, rhs: &RHS) {
+        *self = *self & *rhs;
+    }
+}
+
 macro_rules! bitand_impl(
     ($($t:ty)*) => ($(
         #[cfg(not(test))]
@@ -449,6 +533,8 @@ macro_rules! bitand_impl(
             #[inline]
             fn bitand(&self, rhs: &$t) -> $t { (*self) & (*rhs) }
         }
+        #[cfg(not(test))]
+        impl BitAndAssign<$t> for $t { }
     )*)
 )
 
@@ -484,6 +570,18 @@ pub trait BitOr<RHS,Result> {
     fn bitor(&self, rhs: &RHS) -> Result;
 }
 
+/**
+ * The `BitOrAssign` trait is used to specify the functionality of `|=`.
+ */
+#[lang="bitor_assign"]
+pub trait BitOrAssign<RHS>: BitOr<RHS, Self> {
+    /// The method for the `|=` operator
+    #[inline]
+    fn bitor_assign(&mut self, rhs: &RHS) {
+        *self = *self | *rhs;
+    }
+}
+
 macro_rules! bitor_impl(
     ($($t:ty)*) => ($(
         #[cfg(not(test))]
@@ -491,6 +589,8 @@ macro_rules! bitor_impl(
             #[inline]
             fn bitor(&self, rhs: &$t) -> $t { (*self) | (*rhs) }
         }
+        #[cfg(not(test))]
+        impl BitOrAssign<$t> for $t { }
     )*)
 )
 
@@ -526,6 +626,18 @@ pub trait BitXor<RHS,Result> {
     fn bitxor(&self, rhs: &RHS) -> Result;
 }
 
+/**
+ * The `BitXorAssign` trait is used to specify the functionality of `^=`.
+ */
+#[lang="bitxor_assign"]
+pub trait BitXorAssign<RHS>: BitXor<RHS, Self> {
+    /// The method for the `^=` operator
+    #[inline]
+    fn bitxor_assign(&mut self, rhs: &RHS) {
+        *self = *self ^ *rhs;
+    }
+}
+
 macro_rules! bitxor_impl(
     ($($t:ty)*) => ($(
         #[cfg(not(test))]
@@ -533,6 +645,8 @@ macro_rules! bitxor_impl(
             #[inline]
             fn bitxor(&self, other: &$t) -> $t { (*self) ^ (*other) }
         }
+        #[cfg(not(test))]
+        impl BitXorAssign<$t> for $t { }
     )*)
 )
 
@@ -568,6 +682,18 @@ pub trait Shl<RHS,Result> {
     fn shl(&self, rhs: &RHS) -> Result;
 }
 
+/**
+ * The `ShlAssign` trait is used to specify the functionality of `<<=`.
+ */
+#[lang="shl_assign"]
+pub trait ShlAssign<RHS>: Shl<RHS, Self> {
+    /// The method for the `<<=` operator
+    #[inline]
+    fn shl_assign(&mut self, rhs: &RHS) {
+        *self = *self << *rhs;
+    }
+}
+
 macro_rules! shl_impl(
     ($($t:ty)*) => ($(
         #[cfg(not(test))]
@@ -575,6 +701,8 @@ macro_rules! shl_impl(
             #[inline]
             fn shl(&self, other: &$t) -> $t { (*self) << (*other) }
         }
+        #[cfg(not(test))]
+        impl ShlAssign<$t> for $t { }
     )*)
 )
 
@@ -610,6 +738,18 @@ pub trait Shr<RHS,Result> {
     fn shr(&self, rhs: &RHS) -> Result;
 }
 
+/**
+ * The `ShrAssign` trait is used to specify the functionality of `>>=`.
+ */
+#[lang="shr_assign"]
+pub trait ShrAssign<RHS>: Shr<RHS, Self> {
+    /// The method for the `>>=` operator
+    #[inline]
+    fn shr_assign(&mut self, rhs: &RHS) {
+        *self = *self >> *rhs;
+    }
+}
+
 macro_rules! shr_impl(
     ($($t:ty)*) => ($(
         #[cfg(not(test))]
@@ -617,6 +757,8 @@ macro_rules! shr_impl(
             #[inline]
             fn shr(&self, other: &$t) -> $t { (*self) >> (*other) }
         }
+        #[cfg(not(test))]
+        impl ShrAssign<$t> for $t { }
     )*)
 )
 

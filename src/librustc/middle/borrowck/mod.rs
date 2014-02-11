@@ -20,7 +20,7 @@ use middle::ty;
 use util::ppaux::{note_and_explain_region, Repr, UserString};
 
 use std::cell::{Cell};
-use std::ops::{BitOr, BitAnd};
+use std::ops::{BitOr, BitOrAssign, BitAnd, BitAndAssign};
 use std::rc::Rc;
 use std::string::String;
 use syntax::ast;
@@ -289,9 +289,21 @@ impl BitOr<RestrictionSet,RestrictionSet> for RestrictionSet {
     }
 }
 
+impl BitOrAssign<RestrictionSet> for RestrictionSet {
+    fn bitor_assign(&mut self, rhs: &RestrictionSet) {
+        self.bits |= rhs.bits;
+    }
+}
+
 impl BitAnd<RestrictionSet,RestrictionSet> for RestrictionSet {
     fn bitand(&self, rhs: &RestrictionSet) -> RestrictionSet {
         RestrictionSet {bits: self.bits & rhs.bits}
+    }
+}
+
+impl BitAndAssign<RestrictionSet> for RestrictionSet {
+    fn bitand_assign(&mut self, rhs: &RestrictionSet) {
+        self.bits &= rhs.bits;
     }
 }
 

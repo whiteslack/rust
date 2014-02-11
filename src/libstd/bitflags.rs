@@ -86,9 +86,9 @@
 //!
 //! The following operator traits are implemented for the generated `struct`:
 //!
-//! - `BitOr`: union
-//! - `BitAnd`: intersection
-//! - `Sub`: set difference
+//! - `BitOr` and `BitOrAssign`: union
+//! - `BitAnd` and `BitAndAssign`: intersection
+//! - `Sub` and `SubAssign`: set difference
 //! - `Not`: set complement
 //!
 //! # Methods
@@ -191,6 +191,15 @@ macro_rules! bitflags(
             }
         }
 
+        // NOTE: remove `::std::ops::` on all three after next snapshot
+        impl ::std::ops::BitOrAssign<$BitFlags> for $BitFlags {
+            /// Sets all the active flags in `other` on.
+            #[inline]
+            fn bitor_assign(&mut self, other: &$BitFlags) {
+                self.bits |= other.bits;
+            }
+        }
+
         impl BitAnd<$BitFlags, $BitFlags> for $BitFlags {
             /// Returns the intersection between the two sets of flags.
             #[inline]
@@ -199,11 +208,27 @@ macro_rules! bitflags(
             }
         }
 
+        impl ::std::ops::BitAndAssign<$BitFlags> for $BitFlags {
+            /// Sets the flags to be the intersection of the two sets of flags.
+            #[inline]
+            fn bitand_assign(&mut self, other: &$BitFlags) {
+                self.bits &= other.bits;
+            }
+        }
+
         impl Sub<$BitFlags, $BitFlags> for $BitFlags {
             /// Returns the set difference of the two sets of flags.
             #[inline]
             fn sub(&self, other: &$BitFlags) -> $BitFlags {
                 $BitFlags { bits: self.bits & !other.bits }
+            }
+        }
+
+        impl ::std::ops::SubAssign<$BitFlags> for $BitFlags {
+            /// Unsets all flags active in `other`.
+            #[inline]
+            fn sub_assign(&mut self, other: &$BitFlags) {
+                self.bits &= !other.bits;
             }
         }
 

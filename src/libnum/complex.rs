@@ -109,6 +109,8 @@ impl<T: Clone + Num> Add<Complex<T>, Complex<T>> for Complex<T> {
         Complex::new(self.re + other.re, self.im + other.im)
     }
 }
+impl<T: Clone + Num> AddAssign<Complex<T>> for Complex<T> {}
+
 // (a + i b) - (c + i d) == (a - c) + i (b - d)
 impl<T: Clone + Num> Sub<Complex<T>, Complex<T>> for Complex<T> {
     #[inline]
@@ -116,6 +118,8 @@ impl<T: Clone + Num> Sub<Complex<T>, Complex<T>> for Complex<T> {
         Complex::new(self.re - other.re, self.im - other.im)
     }
 }
+impl<T: Clone + Num> SubAssign<Complex<T>> for Complex<T> {}
+
 // (a + i b) * (c + i d) == (a*c - b*d) + i (a*d + b*c)
 impl<T: Clone + Num> Mul<Complex<T>, Complex<T>> for Complex<T> {
     #[inline]
@@ -124,6 +128,7 @@ impl<T: Clone + Num> Mul<Complex<T>, Complex<T>> for Complex<T> {
                    self.re*other.im + self.im*other.re)
     }
 }
+impl<T: Clone + Num> MulAssign<Complex<T>> for Complex<T> {}
 
 // (a + i b) / (c + i d) == [(a + i b) * (c - i d)] / (c*c + d*d)
 //   == [(a*c + b*d) / (c*c + d*d)] + i [(b*c - a*d) / (c*c + d*d)]
@@ -135,6 +140,7 @@ impl<T: Clone + Num> Div<Complex<T>, Complex<T>> for Complex<T> {
                    (self.im*other.re - self.re*other.im) / norm_sqr)
     }
 }
+impl<T: Clone + Num> DivAssign<Complex<T>> for Complex<T> {}
 
 impl<T: Clone + Num> Neg<Complex<T>> for Complex<T> {
     #[inline]

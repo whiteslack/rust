@@ -1978,15 +1978,33 @@ impl ops::BitOr<TypeContents,TypeContents> for TypeContents {
     }
 }
 
+impl ops::BitOrAssign<TypeContents> for TypeContents {
+    fn bitor_assign(&mut self, other: &TypeContents) {
+        self.bits |= other.bits;
+    }
+}
+
 impl ops::BitAnd<TypeContents,TypeContents> for TypeContents {
     fn bitand(&self, other: &TypeContents) -> TypeContents {
         TypeContents {bits: self.bits & other.bits}
     }
 }
 
+impl ops::BitAndAssign<TypeContents> for TypeContents {
+    fn bitand_assign(&mut self, other: &TypeContents) {
+        self.bits &= other.bits;
+    }
+}
+
 impl ops::Sub<TypeContents,TypeContents> for TypeContents {
     fn sub(&self, other: &TypeContents) -> TypeContents {
         TypeContents {bits: self.bits & !other.bits}
+    }
+}
+
+impl ops::SubAssign<TypeContents> for TypeContents {
+    fn sub_assign(&mut self, other: &TypeContents) {
+        self.bits &= !other.bits;
     }
 }
 

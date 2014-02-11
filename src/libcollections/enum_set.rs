@@ -88,15 +88,33 @@ impl<E:CLike> Sub<EnumSet<E>, EnumSet<E>> for EnumSet<E> {
     }
 }
 
+impl<E:CLike> SubAssign<EnumSet<E>> for EnumSet<E> {
+    fn sub_assign(&mut self, e: &EnumSet<E>) {
+        self.bits &= !e.bits;
+    }
+}
+
 impl<E:CLike> BitOr<EnumSet<E>, EnumSet<E>> for EnumSet<E> {
     fn bitor(&self, e: &EnumSet<E>) -> EnumSet<E> {
         EnumSet {bits: self.bits | e.bits}
     }
 }
 
+impl<E:CLike> BitOrAssign<EnumSet<E>> for EnumSet<E> {
+    fn bitor_assign(&mut self, e: &EnumSet<E>) {
+        self.bits |= e.bits;
+    }
+}
+
 impl<E:CLike> BitAnd<EnumSet<E>, EnumSet<E>> for EnumSet<E> {
     fn bitand(&self, e: &EnumSet<E>) -> EnumSet<E> {
         EnumSet {bits: self.bits & e.bits}
+    }
+}
+
+impl<E:CLike> BitAndAssign<EnumSet<E>> for EnumSet<E> {
+    fn bitand_assign(&mut self, e: &EnumSet<E>) {
+        self.bits &= e.bits;
     }
 }
 

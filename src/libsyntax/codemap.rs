@@ -56,9 +56,23 @@ impl Add<BytePos, BytePos> for BytePos {
     }
 }
 
+impl AddAssign<BytePos> for BytePos {
+    fn add_assign(&mut self, &BytePos(ref rhs): &BytePos) {
+        let BytePos(ref mut lhs) = *self;
+        *lhs += *rhs;
+    }
+}
+
 impl Sub<BytePos, BytePos> for BytePos {
     fn sub(&self, rhs: &BytePos) -> BytePos {
         BytePos((self.to_uint() - rhs.to_uint()) as u32)
+    }
+}
+
+impl SubAssign<BytePos> for BytePos {
+    fn sub_assign(&mut self, &BytePos(ref rhs): &BytePos) {
+        let BytePos(ref mut lhs) = *self;
+        *lhs -= *rhs;
     }
 }
 
@@ -73,9 +87,23 @@ impl Add<CharPos,CharPos> for CharPos {
     }
 }
 
+impl AddAssign<CharPos> for CharPos {
+    fn add_assign(&mut self, &CharPos(ref rhs): &CharPos) {
+        let CharPos(ref mut lhs) = *self;
+        *lhs += *rhs;
+    }
+}
+
 impl Sub<CharPos,CharPos> for CharPos {
     fn sub(&self, rhs: &CharPos) -> CharPos {
         CharPos(self.to_uint() - rhs.to_uint())
+    }
+}
+
+impl SubAssign<CharPos> for CharPos {
+    fn sub_assign(&mut self, &CharPos(ref rhs): &CharPos) {
+        let CharPos(ref mut lhs) = *self;
+        *lhs -= *rhs;
     }
 }
 

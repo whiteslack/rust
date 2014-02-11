@@ -222,17 +222,27 @@ lets_do_this! {
     DropTraitLangItem,               "drop",                    drop_trait;
 
     AddTraitLangItem,                "add",                     add_trait;
+    AddAssignTraitLangItem,          "add_assign",              add_assign_trait;
     SubTraitLangItem,                "sub",                     sub_trait;
+    SubAssignTraitLangItem,          "sub_assign",              sub_assign_trait;
     MulTraitLangItem,                "mul",                     mul_trait;
+    MulAssignTraitLangItem,          "mul_assign",              mul_assign_trait;
     DivTraitLangItem,                "div",                     div_trait;
+    DivAssignTraitLangItem,          "div_assign",              div_assign_trait;
     RemTraitLangItem,                "rem",                     rem_trait;
+    RemAssignTraitLangItem,          "rem_assign",              rem_assign_trait;
     NegTraitLangItem,                "neg",                     neg_trait;
     NotTraitLangItem,                "not",                     not_trait;
     BitXorTraitLangItem,             "bitxor",                  bitxor_trait;
+    BitXorAssignTraitLangItem,       "bitxor_assign",           bitxor_assign_trait;
     BitAndTraitLangItem,             "bitand",                  bitand_trait;
+    BitAndAssignTraitLangItem,       "bitand_assign",           bitand_assign_trait;
     BitOrTraitLangItem,              "bitor",                   bitor_trait;
+    BitOrAssignTraitLangItem,        "bitor_assign",            bitor_assign_trait;
     ShlTraitLangItem,                "shl",                     shl_trait;
+    ShlAssignTraitLangItem,          "shl_assign",              shl_assign_trait;
     ShrTraitLangItem,                "shr",                     shr_trait;
+    ShrAssignTraitLangItem,          "shr_assign",              shr_assign_trait;
     IndexTraitLangItem,              "index",                   index_trait;
 
     UnsafeTypeLangItem,              "unsafe",                  unsafe_type;
