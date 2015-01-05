@@ -113,26 +113,15 @@ impl<S: hash::Writer, Sized? T: Hash<S>> Hash<S> for Box<T> {
     }
 }
 
-/// Extension methods for an owning `Any` trait object.
-#[unstable = "post-DST and coherence changes, this will not be a trait but \
-              rather a direct `impl` on `Box<Any>`"]
-pub trait BoxAny {
-    /// Returns the boxed value if it is of type `T`, or
-    /// `Err(Self)` if it isn't.
-    #[stable]
-    fn downcast<T: 'static>(self) -> Result<Box<T>, Self>;
-}
-
-impl BoxAny for Box<Any> {
+impl Box<Any> {
+    /// Returns the boxed value if it is of type `T`, or `Err(Self)` if it isn't.
     #[inline]
-    #[unstable = "method may be renamed with respect to other downcasting \
-                  methods"]
-    fn downcast<T: 'static>(self) -> Result<Box<T>, Box<Any>> {
+    #[unstable = "method may be renamed with respect to other downcasting methods"]
+    pub fn downcast<T: 'static>(self) -> Result<Box<T>, Box<Any>> {
         if self.is::<T>() {
             unsafe {
                 // Get the raw representation of the trait object
-                let to: TraitObject =
-                    mem::transmute::<Box<Any>, TraitObject>(self);
+                let to: TraitObject = mem::transmute(self);
 
                 // Extract the data pointer
                 Ok(mem::transmute(to.data))
@@ -140,6 +129,18 @@ impl BoxAny for Box<Any> {
         } else {
             Err(self)
         }
+    }
+
+    /// Returns the boxed value, blindly assuming it to be of type `T`.
+    /// If you are not *absolutely certain* of `T`, you *must not* call this.
+    #[inline]
+    #[unstable = "method may be renamed with respect to other downcasting methods"]
+    pub unsafe fn downcast_unchecked<T: 'static>(self) -> Box<T> {
+        // Get the raw representation of the trait object
+        let to: TraitObject = mem::transmute(self);
+
+        // Extract the data pointer
+        mem::transmute(to.data)
     }
 }
 

@@ -121,35 +121,51 @@ impl Any {
     /// `None` if it isn't.
     #[unstable = "naming conventions around acquiring references may change"]
     #[inline]
-    pub fn downcast_ref<'a, T: 'static>(&'a self) -> Option<&'a T> {
+    pub fn downcast_ref<T: 'static>(&self) -> Option<&T> {
         if self.is::<T>() {
             unsafe {
-                // Get the raw representation of the trait object
-                let to: TraitObject = transmute(self);
-
-                // Extract the data pointer
-                Some(transmute(to.data))
+                Some(self.downcast_ref_unchecked())
             }
         } else {
             None
         }
     }
 
+    /// Returns a reference to the boxed value, blindly assuming it to be of type `T`.
+    /// If you are not *absolutely certain* of `T`, you *must not* call this.
+    #[unstable = "naming conventions around acquiring references may change"]
+    #[inline]
+    pub unsafe fn downcast_ref_unchecked<T: 'static>(&self) -> &T {
+        // Get the raw representation of the trait object
+        let to: TraitObject = transmute(self);
+
+        // Extract the data pointer
+        transmute(to.data)
+    }
+
     /// Returns some mutable reference to the boxed value if it is of type `T`, or
     /// `None` if it isn't.
     #[unstable = "naming conventions around acquiring references may change"]
     #[inline]
-    pub fn downcast_mut<'a, T: 'static>(&'a mut self) -> Option<&'a mut T> {
+    pub fn downcast_mut<T: 'static>(&mut self) -> Option<&mut T> {
         if self.is::<T>() {
             unsafe {
-                // Get the raw representation of the trait object
-                let to: TraitObject = transmute(self);
-
-                // Extract the data pointer
-                Some(transmute(to.data))
+                Some(self.downcast_mut_unchecked())
             }
         } else {
             None
         }
+    }
+
+    /// Returns a mutable reference to the boxed value, blindly assuming it to be of type `T`.
+    /// If you are not *absolutely certain* of `T`, you *must not* call this.
+    #[unstable = "naming conventions around acquiring references may change"]
+    #[inline]
+    pub unsafe fn downcast_mut_unchecked<T: 'static>(&mut self) -> &mut T {
+        // Get the raw representation of the trait object
+        let to: TraitObject = transmute(self);
+
+        // Extract the data pointer
+        transmute(to.data)
     }
 }
