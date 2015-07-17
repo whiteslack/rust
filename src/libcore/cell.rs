@@ -287,7 +287,7 @@ pub enum BorrowState {
     Unused,
 }
 
-// Values [1, MAX-1] represent the number of `Ref` active
+// Values [1, MAX-1] represent the number of `Ref2` active
 // (will not outgrow its range since `usize` is the size of the address space)
 type BorrowFlag = usize;
 const UNUSED: BorrowFlag = 0;
@@ -351,7 +351,7 @@ impl<T: ?Sized> RefCell<T> {
 
     /// Immutably borrows the wrapped value.
     ///
-    /// The borrow lasts until the returned `Ref` exits scope. Multiple
+    /// The borrow lasts until the returned `Ref2` exits scope. Multiple
     /// immutable borrows can be taken out at the same time.
     ///
     /// # Panics
@@ -386,9 +386,9 @@ impl<T: ?Sized> RefCell<T> {
     /// ```
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn borrow<'a>(&'a self) -> Ref<'a, T> {
+    pub fn borrow(&self) -> Ref2<&T> {
         match BorrowRef::new(&self.borrow) {
-            Some(b) => Ref {
+            Some(b) => Ref2 {
                 _value: unsafe { &*self.value.get() },
                 _borrow: b,
             },
@@ -398,7 +398,7 @@ impl<T: ?Sized> RefCell<T> {
 
     /// Mutably borrows the wrapped value.
     ///
-    /// The borrow lasts until the returned `RefMut` exits scope. The value
+    /// The borrow lasts until the returned `RefMut2` exits scope. The value
     /// cannot be borrowed while this borrow is active.
     ///
     /// # Panics
@@ -432,9 +432,9 @@ impl<T: ?Sized> RefCell<T> {
     /// ```
     #[stable(feature = "rust1", since = "1.0.0")]
     #[inline]
-    pub fn borrow_mut<'a>(&'a self) -> RefMut<'a, T> {
+    pub fn borrow_mut(&self) -> RefMut2<&mut T> {
         match BorrowRefMut::new(&self.borrow) {
-            Some(b) => RefMut {
+            Some(b) => RefMut2 {
                 _value: unsafe { &mut *self.value.get() },
                 _borrow: b,
             },
@@ -514,7 +514,7 @@ impl<'b> Drop for BorrowRef<'b> {
 impl<'b> Clone for BorrowRef<'b> {
     #[inline]
     fn clone(&self) -> BorrowRef<'b> {
-        // Since this Ref exists, we know the borrow flag
+        // Since this BorrowRef exists, we know the borrow flag
         // is not set to WRITING.
         let borrow = self._borrow.get();
         debug_assert!(borrow != WRITING && borrow != UNUSED);
@@ -527,62 +527,104 @@ impl<'b> Clone for BorrowRef<'b> {
 /// A wrapper type for an immutably borrowed value from a `RefCell<T>`.
 ///
 /// See the [module-level documentation](index.html) for more.
+///
+/// This type alias exists for reasons of backwards compatibility only;
+/// `Ref2` is more general (supporting any type implementing `Deref`
+/// appropriately, not just plain references) and should be used in new code.
+//#[deprecated(since = "1.4.0", reason = "made more general, use `Ref2<&T>` instead")]
 #[stable(feature = "rust1", since = "1.0.0")]
-pub struct Ref<'b, T: ?Sized + 'b> {
+pub type Ref<'b, T: 'b> = Ref2<'b, &'b T>;
+
+/// Wraps a borrowed reference to a value in a `RefCell` box.
+/// A wrapper type for an immutably borrowed value from a `RefCell<T>`.
+///
+/// See the [module-level documentation](index.html) for more.
+#[unstable(feature = "refcell_ref_with_deref", reason = "recently added")]
+pub struct Ref2<'b, T: 'b> {
     // FIXME #12808: strange name to try to avoid interfering with
     // field accesses of the contained type via Deref
-    _value: &'b T,
+    _value: T,
     _borrow: BorrowRef<'b>,
 }
 
 #[stable(feature = "rust1", since = "1.0.0")]
-impl<'b, T: ?Sized> Deref for Ref<'b, T> {
-    type Target = T;
+impl<'b, T: Deref + 'b> Deref for Ref2<'b, T> {
+    type Target = T::Target;
 
     #[inline]
-    fn deref<'a>(&'a self) -> &'a T {
-        self._value
+    fn deref(&self) -> &T::Target {
+        &*self._value
     }
 }
 
-/// Copies a `Ref`.
+/// Copies a `Ref2`.
 ///
 /// The `RefCell` is already immutably borrowed, so this cannot fail.
 ///
 /// A `Clone` implementation would interfere with the widespread
 /// use of `r.borrow().clone()` to clone the contents of a `RefCell`.
-#[deprecated(since = "1.2.0", reason = "moved to a `Ref::clone` associated function")]
+#[deprecated(since = "1.2.0", reason = "moved to a `Ref2::clone` associated function")]
 #[unstable(feature = "core",
            reason = "likely to be moved to a method, pending language changes")]
 #[inline]
-pub fn clone_ref<'b, T:Clone>(orig: &Ref<'b, T>) -> Ref<'b, T> {
-    Ref::clone(orig)
+pub fn clone_ref<'b, T: Clone + 'b>(orig: &Ref2<'b, T>) -> Ref2<'b, T> {
+    Ref2::clone(orig)
 }
 
-impl<'b, T: ?Sized> Ref<'b, T> {
-    /// Copies a `Ref`.
+impl<'b, T: Clone + 'b> Ref2<'b, T> {
+    /// Copies a `Ref2`.
     ///
     /// The `RefCell` is already immutably borrowed, so this cannot fail.
     ///
     /// This is an associated function that needs to be used as
-    /// `Ref::clone(...)`.  A `Clone` implementation or a method would interfere
+    /// `Ref2::clone(...)`.  A `Clone` implementation or a method would interfere
     /// with the widespread use of `r.borrow().clone()` to clone the contents of
     /// a `RefCell`.
     #[unstable(feature = "cell_extras",
                reason = "likely to be moved to a method, pending language changes")]
     #[inline]
-    pub fn clone(orig: &Ref<'b, T>) -> Ref<'b, T> {
-        Ref {
-            _value: orig._value,
+    pub fn clone(orig: &Ref2<'b, T>) -> Ref2<'b, T> {
+        Ref2 {
+            _value: orig._value.clone(),
             _borrow: orig._borrow.clone(),
         }
     }
+}
 
-    /// Make a new `Ref` for a component of the borrowed data.
+impl<'b, T: 'static> Ref2<'b, T> {
+    /// Consumes the `Ref2`, returning the wrapped value.
+    ///
+    /// The `'static` constraint on `T` is what makes this possible; there is no
+    /// longer any need to keep the borrow alive, and so the `Ref2` itself can
+    /// be consumed while keeping the contained value.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// #![feature(refcell_ref_with_deref, cell_extras)]
+    ///
+    /// use std::cell::{RefCell, Ref2};
+    /// use std::borrow::Cow;
+    ///
+    /// let c = RefCell::new("foo");
+    ///
+    /// let r1: Ref2<Cow<str>> = Ref2::map(c.borrow(), |s| Cow::from(*s));
+    /// let r2: Ref2<String> = Ref2::map(r1, |s| s.into_owned());
+    /// let _string: String = r2.into_inner();
+    /// ```
+    #[unstable(feature = "refcell_ref_with_deref", reason = "recently added")]
+    #[inline]
+    pub fn into_inner(self) -> T {
+        self._value
+    }
+}
+
+impl<'b, T: 'b> Ref2<'b, T> {
+    /// Make a new `Ref2` for a component of the borrowed data.
     ///
     /// The `RefCell` is already immutably borrowed, so this cannot fail.
     ///
-    /// This is an associated function that needs to be used as `Ref::map(...)`.
+    /// This is an associated function that needs to be used as `Ref2::map(...)`.
     /// A method would interfere with methods of the same name on the contents
     /// of a `RefCell` used through `Deref`.
     ///
@@ -599,22 +641,22 @@ impl<'b, T: ?Sized> Ref<'b, T> {
     /// ```
     #[unstable(feature = "cell_extras", reason = "recently added")]
     #[inline]
-    pub fn map<U: ?Sized, F>(orig: Ref<'b, T>, f: F) -> Ref<'b, U>
-        where F: FnOnce(&T) -> &U
+    pub fn map<U: 'b, F>(orig: Ref2<'b, T>, f: F) -> Ref2<'b, U>
+        where F: FnOnce(T) -> U
     {
-        Ref {
+        Ref2 {
             _value: f(orig._value),
             _borrow: orig._borrow,
         }
     }
 
-    /// Make a new `Ref` for a optional component of the borrowed data, e.g. an
+    /// Make a new `Ref2` for a optional component of the borrowed data, e.g. an
     /// enum variant.
     ///
     /// The `RefCell` is already immutably borrowed, so this cannot fail.
     ///
     /// This is an associated function that needs to be used as
-    /// `Ref::filter_map(...)`.  A method would interfere with methods of the
+    /// `Ref2::filter_map(...)`.  A method would interfere with methods of the
     /// same name on the contents of a `RefCell` used through `Deref`.
     ///
     /// # Example
@@ -630,24 +672,53 @@ impl<'b, T: ?Sized> Ref<'b, T> {
     /// ```
     #[unstable(feature = "cell_extras", reason = "recently added")]
     #[inline]
-    pub fn filter_map<U: ?Sized, F>(orig: Ref<'b, T>, f: F) -> Option<Ref<'b, U>>
-        where F: FnOnce(&T) -> Option<&U>
+    pub fn filter_map<U: 'b, F>(orig: Ref2<'b, T>, f: F) -> Option<Ref2<'b, U>>
+        where F: FnOnce(T) -> Option<U>
     {
-        f(orig._value).map(move |new| Ref {
+        let borrow = orig._borrow;
+        f(orig._value).map(move |new| Ref2 {
             _value: new,
-            _borrow: orig._borrow,
+            _borrow: borrow,
         })
     }
 }
 
-impl<'b, T: ?Sized> RefMut<'b, T> {
-    /// Make a new `RefMut` for a component of the borrowed data, e.g. an enum
+impl<'b, T: 'static> RefMut2<'b, T> {
+    /// Consumes the `RefMut2`, returning the wrapped value.
+    ///
+    /// The `'static` constraint on `T` is what makes this possible; there is no
+    /// longer any need to keep the borrow alive, and so the `RefMut2` itself can
+    /// be consumed while keeping the contained value.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// #![feature(refcell_ref_with_deref, cell_extras)]
+    ///
+    /// use std::cell::{RefCell, RefMut2};
+    /// use std::borrow::Cow;
+    ///
+    /// let c = RefCell::new("foo");
+    ///
+    /// let r1: RefMut2<Cow<str>> = RefMut2::map(c.borrow_mut(), |s| Cow::from(*s));
+    /// let r2: RefMut2<String> = RefMut2::map(r1, |s| s.into_owned());
+    /// let _string: String = r2.into_inner();
+    /// ```
+    #[unstable(feature = "refcell_ref_with_deref", reason = "recently added")]
+    #[inline]
+    pub fn into_inner(self) -> T {
+        self._value
+    }
+}
+
+impl<'b, T: 'b> RefMut2<'b, T> {
+    /// Make a new `RefMut2` for a component of the borrowed data, e.g. an enum
     /// variant.
     ///
     /// The `RefCell` is already mutably borrowed, so this cannot fail.
     ///
     /// This is an associated function that needs to be used as
-    /// `RefMut::map(...)`.  A method would interfere with methods of the same
+    /// `RefMut2::map(...)`.  A method would interfere with methods of the same
     /// name on the contents of a `RefCell` used through `Deref`.
     ///
     /// # Example
@@ -667,22 +738,22 @@ impl<'b, T: ?Sized> RefMut<'b, T> {
     /// ```
     #[unstable(feature = "cell_extras", reason = "recently added")]
     #[inline]
-    pub fn map<U: ?Sized, F>(orig: RefMut<'b, T>, f: F) -> RefMut<'b, U>
-        where F: FnOnce(&mut T) -> &mut U
+    pub fn map<U: 'b, F>(orig: RefMut2<'b, T>, f: F) -> RefMut2<'b, U>
+        where F: FnOnce(T) -> U
     {
-        RefMut {
+        RefMut2 {
             _value: f(orig._value),
             _borrow: orig._borrow,
         }
     }
 
-    /// Make a new `RefMut` for a optional component of the borrowed data, e.g.
+    /// Make a new `RefMut2` for a optional component of the borrowed data, e.g.
     /// an enum variant.
     ///
     /// The `RefCell` is already mutably borrowed, so this cannot fail.
     ///
     /// This is an associated function that needs to be used as
-    /// `RefMut::filter_map(...)`.  A method would interfere with methods of the
+    /// `RefMut2::filter_map(...)`.  A method would interfere with methods of the
     /// same name on the contents of a `RefCell` used through `Deref`.
     ///
     /// # Example
@@ -704,11 +775,11 @@ impl<'b, T: ?Sized> RefMut<'b, T> {
     /// ```
     #[unstable(feature = "cell_extras", reason = "recently added")]
     #[inline]
-    pub fn filter_map<U: ?Sized, F>(orig: RefMut<'b, T>, f: F) -> Option<RefMut<'b, U>>
-        where F: FnOnce(&mut T) -> Option<&mut U>
+    pub fn filter_map<U: 'b, F>(orig: RefMut2<'b, T>, f: F) -> Option<RefMut2<'b, U>>
+        where F: FnOnce(T) -> Option<U>
     {
-        let RefMut { _value, _borrow } = orig;
-        f(_value).map(move |new| RefMut {
+        let RefMut2 { _value, _borrow } = orig;
+        f(_value).map(move |new| RefMut2 {
             _value: new,
             _borrow: _borrow,
         })
@@ -744,29 +815,40 @@ impl<'b> BorrowRefMut<'b> {
 /// A wrapper type for a mutably borrowed value from a `RefCell<T>`.
 ///
 /// See the [module-level documentation](index.html) for more.
+///
+/// This type alias exists for reasons of backwards compatibility only;
+/// `RefMut2` is more general (supporting any type implementing `Deref`
+/// appropriately, not just plain references) and should be used in new code.
+//#[deprecated(since = "1.4.0", reason = "made more general, use `RefMut2<&mut T>` instead")]
 #[stable(feature = "rust1", since = "1.0.0")]
-pub struct RefMut<'b, T: ?Sized + 'b> {
+pub type RefMut<'b, T: 'b> = RefMut2<'b, &'b mut T>;
+
+/// A wrapper type for a mutably borrowed value from a `RefCell<T>`.
+///
+/// See the [module-level documentation](index.html) for more.
+#[stable(feature = "rust1", since = "1.0.0")]
+pub struct RefMut2<'b, T: 'b> {
     // FIXME #12808: strange name to try to avoid interfering with
     // field accesses of the contained type via Deref
-    _value: &'b mut T,
+    _value: T,
     _borrow: BorrowRefMut<'b>,
 }
 
 #[stable(feature = "rust1", since = "1.0.0")]
-impl<'b, T: ?Sized> Deref for RefMut<'b, T> {
-    type Target = T;
+impl<'b, T: Deref + 'b> Deref for RefMut2<'b, T> {
+    type Target = T::Target;
 
     #[inline]
-    fn deref<'a>(&'a self) -> &'a T {
-        self._value
+    fn deref(&self) -> &T::Target {
+        &*self._value
     }
 }
 
 #[stable(feature = "rust1", since = "1.0.0")]
-impl<'b, T: ?Sized> DerefMut for RefMut<'b, T> {
+impl<'b, T: DerefMut + 'b> DerefMut for RefMut2<'b, T> {
     #[inline]
-    fn deref_mut<'a>(&'a mut self) -> &'a mut T {
-        self._value
+    fn deref_mut(&mut self) -> &mut T::Target {
+        &mut *self._value
     }
 }
 
