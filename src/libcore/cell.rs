@@ -557,6 +557,36 @@ impl<'b, T: Deref + 'b> Deref for Ref2<'b, T> {
     }
 }
 
+#[unstable(feature = "refcell_ref_with_deref", reason = "recently added")]
+impl<'b, T: DerefMut + 'b> DerefMut for Ref2<'b, T> {
+    #[inline]
+    fn deref_mut(&mut self) -> &mut T::Target {
+        &mut *self._value
+    }
+}
+
+impl<'b, T: 'b> Ref2<'b, T> {
+    /// Takes a reference directly to the wrapped object.
+    ///
+    /// In the most common case, you should use the `Deref` implementation
+    /// (it’s basically equivalent to `&**Ref2::inner(self)`),
+    /// but if you’re dealing with a `T` that is not itself dereferenceable, then use this.
+    #[unstable(feature = "refcell_ref_with_deref", reason = "recently added")]
+    pub fn inner<'a>(self_: &'a Self) -> &'a T {
+        &self_._value
+    }
+
+    /// Takes a mutable reference directly to the wrapped object.
+    ///
+    /// In the most common case, you should use the `DerefMut` implementation
+    /// (it’s basically equivalent to `&mut **Ref2::inner_mut(self)`),
+    /// but if you’re dealing with a `T` that is not itself dereferenceable, then use this.
+    #[unstable(feature = "refcell_ref_with_deref", reason = "recently added")]
+    pub fn inner_mut<'a>(self_: &'a mut Self) -> &'a mut T {
+        &mut self_._value
+    }
+}
+
 /// Copies a `Ref2`.
 ///
 /// The `RefCell` is already immutably borrowed, so this cannot fail.
